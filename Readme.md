@@ -7,3 +7,6 @@ just fill in their solutions.
 
 This document uses several latex packages and depends on the `pdflatex` program.
 I just have the entire TeX live library installed so that `pdflatex` just works.
+
+If you spot any errors in my solutions, please let me know! I am not aware of 
+any comprehensive set of exercise solutions.
