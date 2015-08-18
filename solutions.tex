@@ -32,10 +32,14 @@
 \newcommand{\id}{\mathrm{id}}
 \newcommand{\im}{\mathrm{im}}
 
+% category theory macros
+\newcommand{\Obj}{\mathsf{Obj}}
+\newcommand{\Hom}{\mathsf{Hom}}
+
 \renewcommand{\thesection}{\Roman{section}} 
 
 \begin{document}
-\pdfrender{StrokeColor=black,TextRenderingMode=2,LineWidth=0.8pt}
+\pdfrender{StrokeColor=black,TextRenderingMode=2,LineWidth=0.6pt}
 
 \section{Chapter 1}
 \subsection{Preliminaries: Set theory and categories}
@@ -490,6 +494,74 @@ Now, suppose that $X,Y\subseteq A$ and $f(X) = f(Y)$. Then, for all $a\in A$,
 $a\in X \iff f(X)(a) = 1 \iff f(Y)(a) = 1 \iff a\in Y$. Hence $f$ is injective,
 so $2^A\cong\mathcal{P}(A)$.
 \QEDA
+
+}
+
+\subsection{Category theory}
+
+\exercise
+{3.1}{$\rhd$ Let $\mathsf{C}$ be a category. Consider a structure
+$\mathsf{C}^{op}$ with
+\begin{enumerate}
+\item $\Obj(\mathsf{C}^{op}) = \Obj(\mathsf{C})$
+\item For $A, B$ objects of $\mathsf{C}^{op}$ (hence objects of $\mathsf{C}$),
+$\Hom_{\mathsf{C}^{op}}(A, B) := \Hom_{\mathsf{C}}(B, A)$.
+\end{enumerate}
+Show how to make this into a category (that is, define composition of morphisms
+in $\mathsf{C}^{op}$ and verify the properties listed in \S3.1).
+
+Intuitively, the `opposite' category $\mathsf{C}^{op}$ is simply obtained by
+`reversing all the arrows' in $\mathsf{C}$. [5.1, \S III.1.1, \S IX.1.2,
+IX.1.10]}{
+
+For objects $A,B,C\in\Obj(\mathsf{C}^{op})$, the set of morphisms between $A$
+and $B$ in $\mathsf{C}^{op}$, $\Hom_{\mathsf{C}^{op}}(A,B)$, is defined as
+$\Hom_{\mathsf{C}}(B, A)$. Similarly for the morphisms between $B$ and $C$. So
+for morphisms $f\in\Hom_{\mathsf{C}^{op}}(A,B)$ and
+$g\in\Hom_{\mathsf{C}^{op}}(B,C)$, to define composition we recall the
+set-function $\circ_{\mathsf{C}} : \Hom_{\mathsf{C}}(C,B) \times
+\Hom_{\mathsf{C}}(B,A) \to\Hom_{\mathsf{C}}(C,A)$ that is defined for the
+objects $A,B,C\in\Obj(\mathsf{C})=\Obj(\mathsf{C}^{op})$; we shall define the
+composition of morphisms $f:A\to B$ and $g:B\to C$ in $\mathsf{C}^{op}$ with
+this function. Precisely, we define
+
+\[ \circ_{\mathsf{C}^{op}}: \Hom_{\mathsf{C}^{op}}(A,B) \times
+\Hom_{\mathsf{C}^{op}}(B,C) \to \Hom_{\mathsf{C}^{op}}(A,C) \]
+
+to be
+
+\[ \circ_{\mathsf{C}^{op}}(f,g) = \circ_{\mathsf{C}}(g,f) \]
+
+for all $f\in\Hom_{\mathsf{C}^{op}}(A,B)$ and $f\in\Hom_{\mathsf{C}^{op}}(B,C)$.
+The domain and codomain of $\circ_{\mathsf{C}}$ and $\circ_{\mathsf{C}^{op}}$
+match (up to transposing the coordinates in the domain) due to the equality of
+$\Hom_{\mathsf{C}}(A,B)$ with $\Hom_{\mathsf{C}^{op}}(B,A)$.
+
+\tpar
+To show that this composition makes $\mathsf{C}^{op}$ a category, first we note
+that the fact that $\mathsf{C}$ is a category implies the existence of a
+morphism $1_{A}$ taking $A$ to itself where $A\in\Obj(\mathsf{C})$; this
+morphism is thus also present in $\Hom_{\mathsf{C}^{op}}(A,A) =
+\Hom_{\mathsf{C}}(A,A)$. Secondly, for objects $A,B,C,D\in\Obj(\mathsf{C})$, any
+morphisms $f\in\Hom_{\mathsf{C}^{op}}(A,B)$, $g\in\Hom_{\mathsf{C}^{op}}(B,C)$,
+and $h\in\Hom_{\mathsf{C}^{op}}(C,D)$ are associative, since
+
+\[ (h \circ_{\mathsf{C}^{op}} g) \circ_{\mathsf{C}^{op}} f = f
+\circ_{\mathsf{C}} (g \circ_{\mathsf{C}} h) = (f \circ_{\mathsf{C}} g)
+\circ_{\mathsf{C}} h = h \circ_{\mathsf{C}^{op}} (g \circ_{\mathsf{C}^{op}} f).
+\]
+
+Finally, for any morphism $f\in\Hom_{\mathsf{C}^{op}}(A,B)$ we have,
+
+\[ f \circ_{\mathsf{C}^{op}} 1_A = 1_A \circ_{\mathsf{C}} f = f \text{ and }
+1_B \circ_{\mathsf{C}^{op}} f = f \circ_{\mathsf{C}} 1_B = f; \]
+
+hence the identities are ``identities with respect to composition''. Last, for
+objects $A,B,C,D\in\Obj(\mathsf{C})$ where $A\neq C$ and $B\neq D$,
+clearly $\Hom_{\mathsf{C}}(B,A)\cap\Hom_{\mathsf{C}}(D,C)=\emptyset$ is true iff 
+$\Hom_{\mathsf{C^{op}}}(A,B)\cap\Hom_{\mathsf{C^{op}}}(C,D)=\emptyset$. Hence
+$\mathsf{C}^{op}$ is a category.
+
 }
 
 \end{document}
