@@ -566,6 +566,7 @@ objects $A,B,C,D\in\Obj(\mathsf{C})$ where $A\neq C$ and $B\neq D$,
 clearly $\Hom_{\mathsf{C}}(B,A)\cap\Hom_{\mathsf{C}}(D,C)=\emptyset$ is true iff 
 $\Hom_{\mathsf{C^{op}}}(A,B)\cap\Hom_{\mathsf{C^{op}}}(C,D)=\emptyset$. Hence
 $\mathsf{C}^{op}$ is a category.
+\QEDA
 
 }
 
@@ -576,6 +577,7 @@ The set $\mathrm{End}_{\mathsf{Set}}(A)$ is the set of functions $f:A\to A$.
 Since $A$ is finite, write $\abs{A} = n$ for some $n\in\mathbf{Z}$. By exercise
 2.10, we know that $\abs{A^A} = \abs{A}^{\abs{A}} = n^n$. So the the set
 $\mathrm{End}_{\mathsf{Set}}(A)$ has size $n^n$.
+\QEDA
 
 }
 
@@ -583,8 +585,180 @@ $\mathrm{End}_{\mathsf{Set}}(A)$ has size $n^n$.
 {3.3}{$\rhd$ Formulate precisely what it means to say that $1_a$ is an identity
 with respect to composition in Example 3.3, and prove this assertion. [\S3.2]}{
 
-
+Let $S$ be a set and $\sim$ be a binary relation on the set $S$. Then, for
+elements $a,b\in S$, $\Hom(a,b)$ is the pair $(a,b)\in S\times S$ if $a\sim b$,
+or $\emptyset$ otherwise. Composition of morphisms $(a,b)$ and $(b,c)$ is simply
+the pair $(a,c)$, which captures the transitivity of $\sim$. We will say that
+$1_a = (a,a)$, for $a\in S$, is \textit{an identity with respect to composition}
+if, for any $b\in S$, $(a,b)(a,a) = (a,b)$. Now, if $a\sim a$ and $a\sim b$,
+then trivially it is the case that $a\sim b$; hence $(a,b)(a,a) = (a,b)$, and
+$1_a$ is an identity w.r.t. composition as required.
+\QEDA
 
 }
+
+\exercise
+{3.4}{Can we define a category in the style of Example 3.3 using the relation
+$<$ on the set $\mathbf{Z}$?}{
+
+No, we can't. This is because $<$ isn't reflexive: $x\not<x$ for any
+$x\in\mathbf{Z}$.
+\QEDA
+
+}
+
+\exercise
+{3.5}{$\rhd$ Explain in what sense Example 3.4 is an instance of the categories
+considered in Example 3.3. [\S 3.2]}{
+
+Let $S$ be a set. Example 3.4 considers the category $\hat{S}$ with objects
+$\Obj(\hat{S}) = \mathscr{P}(S)$ and morphisms $\Hom_{\hat{S}}(A,B) =
+\set{(A,B)}$ if $A\subseteq B$ and $\emptyset$ otherwise, for all sets
+$A,B\in\mathscr{P}$. The category $\hat{S}$ is an instance of the categories
+explained in Example 3.3 because $\subseteq$ is a reflexive and transitive
+operation on the power set of any set $S$. Indeed, for $X,Y,Z\subseteq S$, we have
+that $X\subseteq X$ and, if $X\subseteq Y$ and $Y\subseteq Z$, then if $x\in X$,
+then $x\in Y$ and $x\in Z$ so $X\subseteq Z$.
+\QEDA
+
+}
+
+\exercise
+{3.6}{$\rhd$ (Assuming some familiarity with linear algebra.) Define a category
+$\mathsf{V}$ by taking $\Obj(\mathsf{V}) = \mathbf{N}$ and letting
+$\Hom_{\mathsf{V}}(m,n) = \text{ the set of $m\times n$ matrices with real
+entries,}$ for all $m,n\in\mathbf{N}$. (We will leave the reader the task of
+making sense of a matrix with 0 rows or columns.) Use product of matrices to
+define composition. Does this category `feel' familiar? [\S VI.2.1, \S
+VIII.1.3]}{
+
+Yes! It is yet another instance of Example 3.3. The binary relation $\sim$ on
+$\mathbf{N} \times \mathbf{N}$ holds for all values $(n,m)\in\mathbf{N} \times
+\mathbf{N}$, and means that a matrix of size $m\times n$ ``can be built''. It is
+reflexive trivially. It is transitive trivially as well---a matrix of any size
+can be built. However, it would also hold, for example, if we had to in some
+sense ``deduce'' that a $3\times 3$ matrix could be built using the fact that
+$3\times 1$ and $1\times 3$ matrices can be built.
+
+}
+
+\exercise
+{3.7}{$\rhd$ Define carefully the objects and morphisms in Example 3.7, and draw
+the diagram corresponding to compositon. [\S 3.2]}{
+
+\def \C {\mathsf{C}}
+\def \CA {\mathsf{C}^A}
+
+Let $\C$ be a category, and $A\in\C$. We want to define $\CA$. Let $\Obj(\CA)$
+include all morphisms $f\in\Hom_\C(A,Z)$ for all $Z\in\Obj(\C)$. For any two
+objects $f,g\in\Obj(\CA)$, $f:A\to Z_1$ and $g:A\to Z_2$, we define the
+morphisms $\Hom_\CA(f,g)$ to be the morphisms $\sigma\in\Hom_\C(Z_1, Z_2)$ such
+that $g=\sigma f$. Now we must check that these morphisms satisfy the axioms.
+
+\tpar
+\begin{enumerate}
+  \item Let $f\in\Obj(\CA)\in\Hom_\C(A,Z)$ for some object $Z\in\Obj(\C)$. Then
+there exists an identity morphism $1_Z\in\Hom_\C(Z,Z)$ since $\C$ is a category.
+This is a morphism such that $f=1_zf$, so $\Hom_\CA(f,f)$ is also nonempty.
+  \item Let $f,g,h\in\Obj(\CA)$ such that there are morphisms
+$\sigma\in\Hom_\CA(f,g)$ and $\tau\in\Hom_\CA(g,h)$. Then there is a morphism
+$\upsilon\in\Hom_\CA(f,h)$, namely $\tau\sigma$, which exists because of
+morphism composition in $\C$. For clarity, we write that  $f:A\to Z_1$, $g:A\to
+Z_2$, $h:A\to Z_3$, with $\sigma:Z_1\to Z_2$ and $\tau:Z_2\to Z_3$. We have
+$g=\sigma f$ and $h=\tau g$. Hence, $\upsilon f = \tau\sigma f = \tau g = h$ as
+required.
+  \item Lastly, let $f,g,h,i\in\Obj(\CA)$ with $Z_1, Z_2, Z_3, Z_4$ codomains
+respectively, and with $\sigma\in\Hom_\CA(f,g)$, $\tau\in\Hom_\CA(g,h)$, and
+$\upsilon\in\Hom_\CA(h,i)$. Since $\sigma$, $\tau$, and $\upsilon$ are morphisms
+in $\C$ taking $Z_1\to Z_2$, etc., morphism composition is associative; hence
+morphism composition is associative in $\CA$ as well.
+\end{enumerate}
+
+\QEDA
+
+}
+
+{ \def \C {\mathsf{C}} \def \Cp {\C'}
+\exercise
+{3.8}{$\rhd$ A \textit{subcategory} $\Cp$ of a category $\C$ consists of a
+collection of objects of $\C$, with morphisms
+$\Hom_\Cp(A,B) \subseteq \Hom_\C(A,B)$ for all objects $A,B\in\Obj(\Cp)$, such
+that identities and compositions in $\C$ make $\Cp$ into a category. A
+subcategory $\Cp$ is \textit{full} if $\Hom_\Cp(A,B) = \Hom_\C(A,B)$ for all
+$A,B\in\Obj(\Cp)$. Construct a category of \textit{infinite sets} and explain
+how it may be viewed as a full subcategory of $\mathsf{Set}$. [4.4,\S VI.1.1, \S
+VIII.1.3]}{
+
+\def \Set {\mathsf{Set}}
+\def \ISet {\mathsf{Inf}\mathsf{Set}}
+
+Let $\ISet$ be a subcategory of $\Set$ with $\Obj(\ISet)$ being all infinite
+sets and $\Hom_\ISet(A,B)$ for infinite sets $A,B$ being the functions from $A$
+to $B$. Since $\Hom_\Set(A,B)$ is just the set of all functions from $A$ to $B$
+and not, say, the set of all functions from subsets of $A$ that are in
+$\Obj(\Set)$ to $B$, $\ISet$ is full since $\Hom_\ISet(A,B)=\Hom_\Set(A,B)$ for
+all infinite sets $A,B\in\Obj(\ISet)$.
+
+}}
+
+{\def \Set {\mathsf{Set}} \def \MSet {\mathsf{MSet}}
+\exercise
+{3.9}{$\rhd$ An alternative to the notion of \textit{multiset} introduced in
+\S2.2 is obtained by considering sets endowed with equivalence relations;
+equivalent elements are taken to be multiple instance of elements `of the same
+kind'. Define a notion of morphism between such enhanced sets, obtaining a
+category $\MSet$ containing (a `copy' of) $\Set$ as a full subcategory. (There
+may be more than one reasonable way to do this! This is intentionally an
+open-ended exercise.) Which objects in $\MSet$ determine ordinary multisets as
+defined in \S2.2 and how? Spell out what a morphism of multisets would be from
+this point of view. (There are several natural motions of morphisms of
+multisets. Try to define morphisms in $\MSet$ so that the notion you obtain for
+ordinary multisets captures your intuitive understanding of these objects.)
+[\S2.2, \S3.2, 4.5]}{
+
+Define $\Obj(\MSet)$ as all tuples $(S, \sim)$ where $S$ is a set and $\sim$ is
+an equivalence relation on $S$. For two multisets $\hat{S} = (S,\sim), \hat{T} =
+(T,\approx) \in \Obj(\MSet)$, we define a morphism
+$f\in\Hom_\MSet(\hat{S},\hat{T})$ to be a set-function $f:S\to T$ such that, for
+$x,y\in S$, $x\sim y\implies f(x)\approx f(y)$, and morphism composition the
+same way as set-functions. Now we verify the axioms:
+
+\tpar
+\begin{enumerate}
+\item For a multiset $(S,\sim)$, we borrow the set-function $1_S:S\to S$ and
+note that it necessarily preserves equivalence, i.e. $x\sim y\implies 1_S(x)\sim
+1_S(y)$.
+\item Let there be objects $\hat{S}=(S,\sim), \hat{T}=(T,\approx),
+\hat{U}=(U,\cong)$ with morphisms $f\in\Hom_\MSet(\hat{S},\hat{T})$ and
+$g\in\Hom_\MSet(\hat{T},\hat{U})$. Note that $gf:S\to U$ is a set-function since
+$\Set$ is a category. Now, since $f$ is a morphism in $\MSet$, for
+$x,y\in S$, if $x\sim y$, then $f(x)\approx f(y)$, and since $f(x),f(y)\in T$
+and $g$ is a morphism in $\MSet$, $g(f(x))\cong g(f(y))$.
+\item Associativity can be proven similarly.
+\end{enumerate}
+
+Hence $\MSet$ as defined above is a category. Now, recall that multisets are
+defined in \S2.2 as a set $S$ and a \textit{multiplicity function}
+$m:S\to\mathbf{N}$. So, for any set $S$ and function $m:S\to\mathbf{N}$, if we
+define the equivalence relation corresponding to $m$ as $\sim_m$ then the
+tuple $(S,\sim_m)\in\Obj(\MSet)$. The objects in $\MSet$ which
+\textit{don't} correspond to any multiset as defined in \S2.2 are sets $S$ with
+equivalence relations $\sim$ such that both $S$ and $\mathscr{P}_\sim$ are
+uncountable; this way, one cannot construct a function $m:S\to\mathbf{N}$
+corresponding to each set in the partition $\mathscr{P}_\sim$, since
+$\mathbf{N}$ is countable.
+
+}}
+
+{\def \C {\mathsf{C}}
+\exercise
+{3.11}{$\rhd$ Draw the relevant diagrams and define composition and identities
+for the category $\C^{A,B}$ mentioned in Example 3.9. Do the same for the
+category $\C^{\alpha,\beta}$ mentioned in Example 3.10. [\S5.5, 5.12]}{
+
+\textit{I will do this with pen and paper. The diagrams are too annoying to
+\LaTeX}.
+
+}}
 
 \end{document}
