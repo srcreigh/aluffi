@@ -1,74 +1,133 @@
-\documentclass[14pt,parskip=full]{scrartcl}
 
+% The scrartcl document class lets us have a wider stroke width for the fonts. However, it
+% changes the heading font by default so we've used the \setkomafont command to
+% restore the headings to the vanilla LaTeX style.
+\documentclass[fontsize=14pt]{scrartcl}
+\setkomafont{disposition}{\normalfont\bfseries}
+
+% Standard American Math Society packages provide theorem environments, symbols,
+% etc.
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{pdfrender,xcolor}
+% The tiks-cd package provides macros for easily writing commutative diagrams.
+% For more info see [1].
+% [1]: http://ctan.math.ca/tex-archive/graphics/pgf/contrib/tikz-cd/tikz-cd-doc.pdf
+\usepackage{tikz-cd}
+
+% The pdfrender package is used to output fonts with a larger stroke width.
+\usepackage{pdfrender}
+
+% The mathrsfs package provides the script font.
 \usepackage{mathrsfs}
 
 \usepackage[margin=0.6in]{geometry}
-\usepackage{breqn}
 
+% The chngcntr ("change counter") package is used here so that subsection
+% numbers are written without the leading section number. This takes place in
+% the subsection headings as well as the theorem environment numbering.
+%
+% Before:
+% 1. Section
+% 1.1. Subsection
+% Problem 1.1.1. What is 1 + 1?
+% Problem 1.1.2. What is 1 + 2?
+%
+% After:
+% 1. Section
+% 1. Subsection
+% Problem 1.1. What is 1 + 1?
+% Problem 1.2. What is 1 + 2?
 \usepackage{chngcntr}
 \counterwithout{subsection}{section}
 
-\setlength{\parindent}{30pt}
-
-\setkomafont{disposition}{\normalfont\bfseries}
-
-\newcommand{\exercise}[3]{
-\noindent
-\textbf{#1.} #2
-
-\noindent
-\textit{Solution.}{\let\tpar\par \let\par\relax #3}
+% The problem environment is a regular ams theorem environment with "Problem"
+% text and some leading space to give some separation between the problems.
+\newtheorem{problem-internal}{Problem}[subsection]
+\newenvironment{problem}{
+  \medskip
+  \begin{problem-internal}
+}{
+  \end{problem-internal}
 }
 
-\newcommand{\set}[1]{\left\{\,#1\,\right\}}
-\newcommand*{\QEDA}{\hfill\ensuremath{\blacksquare}}
-\newcommand{\id}{\mathrm{id}}
-\newcommand{\im}{\mathrm{im}}
+% The solution environment is a proof environment with the "solution" text as
+% well as the following adjustments:
+% - No indent on paragraphs;
+% - A small amount of space between paragraphs.
+%
+% Note: The negative space at the beginning is to remove the space before the
+% first paragraph in the solution.
+\newenvironment{solution}{
+  \begin{proof}[Solution]
+  \vspace{-8px}
+  \setlength{\parskip}{4px}
+  \setlength{\parindent}{0px}
+}{
+  \end{proof}
+}
 
-% category theory macros
-\newcommand{\Obj}{\mathrm{Obj}}
-\newcommand{\Hom}{\mathrm{Hom}}
-
-\newcommand\abs[1]{\left|#1\right|}
-
+% Renewing the \thesection command changes the section numbers to roman
+% numerals. This matches the style of the Aluffi textbook.
+%
+% Before:
+% 1. Section
+% 1.1. Subsection
+%
+% After:
+% I. Section
+% I.1. Subsection
 \renewcommand{\thesection}{\Roman{section}} 
 
+% Renewing the \qedsymbol command changes the QED symbol. This QED symbol is
+% automatically used by the proof environment.
+\renewcommand\qedsymbol{\hfill\ensuremath{\blacksquare}}
+
+% Set with spacing padding for the curly braces.
+\newcommand{\set}[1]{\left\{\,#1\,\right\}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\im}{\mathrm{im}}
+\newcommand{\Obj}{\mathrm{Obj}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\abs}[1]{\left|#1\right|}
+
 \begin{document}
-\pdfrender{StrokeColor=black,TextRenderingMode=2,LineWidth=0.6pt}
+\pdfrender{StrokeColor=black,TextRenderingMode=2,LineWidth=0.3pt}
+
+
 
 \section{Chapter 1}
 \subsection{Preliminaries: Set theory and categories}
 
-\exercise
-{1.1}{Locate a discussion of Russel's paradox, and understand it.}{
 
-Recall that, in naive set theory, any collection of objects that satisfy some
-property can be called a set. Russel's paradox can be illustrated as follows.
-Let $R$ be the set of all sets that do not contain themselves. Then, if $R\notin
-R$, then by definition it must be the case that $R\in R$; similarly, if $R\in R$
-then it must be the case that $R\notin R$.
+% Problem 1.1
+\begin{problem}
+Locate a discussion of Russel's paradox, and understand it.
+\end{problem}
+\begin{solution}
+Recall that, in naive set theory, any collection of objects
+that satisfy some property can be called a set. Russel's paradox can be
+illustrated as follows.  Let $R$ be the set of all sets that do not contain
+themselves. Then, if $R\notin R$, then by definition it must be the case that
+$R\in R$; similarly, if $R\in R$ then it must be the case that $R\notin R$.
+\end{solution}
 
-}
 
-\exercise
-{1.2}{$\rhd$ Prove that if $\sim$ is an equivalence relation on a set $S$, then
+% Problem 1.2
+\begin{problem}
+$\rhd$ Prove that if $\sim$ is an equivalence relation on a set $S$, then
 the corresponding family $\mathscr{P}_{\sim}$ defined in \S1.5 is indeed a
 partition of $S$; that is, its elements are nonempty, disjoint, and their union
-is $S$.  [\S1.5]}{
+is $S$. [\S1.5]
+\end{problem}
 
-Let $S$ be a set with an equivalence relation $\sim$. Consider the family of
-equivalence classes w.r.t. $\sim$ over $S$:
-
-
+\begin{solution}
+Let $S$ be a set with an equivalence relation $\sim$.
+Consider the family of equivalence classes w.r.t. $\sim$ over $S$:
+%
 \[ \mathscr{P}_{\sim} = \set{[a]_{\sim} \mid a\in S} \]
-
+%
 Let $[a]_{\sim}\in\mathscr{P}_{\sim}$. Since $\sim$ is an equivalence relation,
 by reflexivity we have $a\sim a$, so $[a]_{\sim}$ is nonempty. Now, suppose
 $a$ and $b$ are arbitrary elements in $S$ such that $a\not\sim b$. For
@@ -76,23 +135,26 @@ contradiction, suppose that there is an $x\in [a]_{\sim}\cap[b]_{\sim}$. This
 means that $x\sim a$ and $x\sim b$. By transitivity, we get that $a\sim b$; this
 is a contradiction. Hence the $[a]_{\sim}$ are disjoint. Finally, let $x\in S$.
 Then $x\in[x]_{\sim}\in \mathscr{P}_{\sim}$. This means that
-
+%
 \[ \bigcup_{[a]_{\sim} \in \mathscr{P}_{\sim}} [a]_{\sim} = S, \]
+%
+that is, the union of the elements of $\mathscr{P}_{\sim}$ is $S$.
+\end{solution}
 
-that is, the union of the elements of $\mathscr{P}_{\sim}$ is $S$. \QEDA
 
-}
+% Problem 1.3
+\begin{problem}
+$\rhd$ Given a partition $\mathscr{P}$ on a set $S$, show how to define a
+relation $\sim$ such that $\mathscr{P} = \mathscr{P}_{\sim}$. [\S1.5]
+\end{problem}
 
-\exercise
-{1.3}{$\rhd$ Given a partition $\mathscr{P}$ on a set $S$, show how to define a
-relation $\sim$ such that $\mathscr{P} = \mathscr{P}_{\sim}$. [\S1.5]}{
-
-Define, for $a,b\in S$, $a\sim b$ if and only if there exists an
-$X\in\mathscr{P}$ such that $a\in X$ and $b\in X$. We will show that
+\begin{solution}
+Define, for $a,b\in S$, $a\sim b$ if and only if there exists
+an $X\in\mathscr{P}$ such that $a\in X$ and $b\in X$. We will show that
 $\mathscr{P} = \mathscr{P}_{\sim}$. 
 
-\tpar
-1. ($\mathscr{P}\subseteq\mathscr{P}_{\sim}$). Let $X\in \mathscr{P}$; we want to
+\begin{enumerate}
+\item ($\mathscr{P}\subseteq\mathscr{P}_{\sim}$). Let $X\in \mathscr{P}$; we want to
 show that $X\in\mathscr{P}_{\sim}$. We know that $X$ is
 nonempty, so choose $a\in X$ and consider $[a]_{\sim}\in\mathscr{P}_{\sim}$. We
 need to show that $X=[a]_{\sim}$. Suppose $a'\in X$ (it may be that $a'=a$.)
@@ -100,74 +162,74 @@ Since $a,a'\in X$, $a\sim a'$, so $a'\in[a]_{\sim}$. Now, suppose $a'\in
 [a]_{\sim}$. We have $a'\sim a$, so $a'\in X$. Hence $X=[a]_{\sim}\in
 \mathscr{P}_{\sim}$, so $\mathscr{P}\subseteq\mathscr{P}_{\sim}$.
 
-\tpar
-2. ($\mathscr{P}_{\sim}\subseteq\mathscr{P}$). Let $[a]_{\sim}\in\mathscr{P}_{\sim}$.
+\item ($\mathscr{P}_{\sim}\subseteq\mathscr{P}$). Let $[a]_{\sim}\in\mathscr{P}_{\sim}$.
 From exercise I.1.1 we know that $[a]_{\sim}$ is non-empty. Suppose
 $a'\in[a]_{\sim}$. By definition, since $a'\sim a$, there exists a set $X$ such
 that $a,a'\in X$. Hence $[a]_{\sim}\subseteq X$. Also, if $a,a'\in X$ (not
 necessarily distinct) then $a\sim a'$. Therefore,
 $\mathscr{P}_{\sim}\subseteq\mathscr{P}$, and with 1. we get that the sets
 $\mathscr{P}$ and $\mathscr{P}_{\sim}$ are equal.
+\end{enumerate}
+\end{solution}
 
-\QEDA
 
-}
+% Problem 1.4
+\begin{problem}
+How many different equivalence relations can be defined on the set $\{1,2,3\}?$
+\end{problem}
 
-\exercise
-{1.4}{How many different equivalence relations can be defined on the set
-$\{1,2,3\}?$}{
-
+\begin{solution}
 From the definition of an equivalence relation and the solution to problem
 \textbf{I.1.3}, we can see that an equivalence relation on $S$ is equivalent to
 a partition of $S$. Thus the number of equivalence relations on $S$ is equal to
 the number of partitions of $S$. Since $\{1,2,3\}$ is small we can determine
 this by hand:
 
-\tpar
 \[ \mathscr{P}_0 = \set{\{1,2,3\}} \]
 \[ \mathscr{P}_1 = \set{\{1\},\{2\},\{3\}\}} \]
 \[ \mathscr{P}_2 = \set{\{1,2\},\{3\}} \]
 \[ \mathscr{P}_3 = \set{\{1\},\{2,3\}} \]
 \[ \mathscr{P}_4 = \set{\{1,3\},\{2\}} \]
 
-\tpar
-\noindent
 Thus there can be only $5$ equivalence relations defined on $\{1,2,3\}$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{1.5}{Give an example of a relation that is reflexive and symmetric but not
+% Problem 1.5
+\begin{problem}
+Give an example of a relation that is reflexive and symmetric but not
 transitive. What happens if you attempt to use this relation to define a
 partition on the set? (Hint: Thinking about the second question will help you
-answer the first one.)}{
+answer the first one.)
+\end{problem}
 
+\begin{solution}
 For $a,b\in \mathbf{Z}$, define $a\diamond b$ to be true if and only if
-$\abs{a-b}
-\leq 1$. It is reflexive, since $a\diamond a = \abs{a-a} = 0 \leq 1$ for any $a\in
-\mathbf{Z}$, and it is symmetric since $a\diamond b = \abs{a-b} = \abs{b-a} = b\diamond
-a$ for any $a,b\in \mathbf{Z}$. However, it is not transitive. Take for example
-$a=0, b=1, c=2$.  Then we have $\abs{a-b} = 1\leq 1$, and $\abs{b-c} = 1\leq 1$, but
-$\abs{a-c} = 2 > 1$; so $a\diamond b$ and $b\diamond c$, but not $a\diamond c$.
+$\abs{a-b} \leq 1$. It is reflexive, since $a\diamond a = \abs{a-a} = 0 \leq 1$
+for any $a\in \mathbf{Z}$, and it is symmetric since $a\diamond b = \abs{a-b} =
+\abs{b-a} = b\diamond a$ for any $a,b\in \mathbf{Z}$. However, it is not
+transitive. Take for example $a=0, b=1, c=2$.  Then we have $\abs{a-b} = 1\leq
+1$, and $\abs{b-c} = 1\leq 1$, but $\abs{a-c} = 2 > 1$; so $a\diamond b$ and
+$b\diamond c$, but not $a\diamond c$.
 
-\tpar
 When we try to build a partition of $\mathbf{Z}$ using $\diamond$, we get
 "equivalence classes" that are not disjoint. For example, $[2]_{\diamond} =
 \{1,2,3\}$, but $[3]_{\diamond} = \{2,3,4\}$. Hence $\mathscr{P}_{\diamond}$ is
 not a partition of $\mathbf{Z}$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{1.6}{Define a relation $\sim$ on the set $\mathbf{R}$ of real numbers by
+% Problem 1.6
+\begin{problem}
+Define a relation $\sim$ on the set $\mathbf{R}$ of real numbers by
 setting $a\sim b\iff b-a\in\mathbf{Z}$. Prove that this is an equivalence
 relation, and find a `compelling' description for $\mathbf{R}\,/\!\sim$. Do the
 same for the relation $\approx$ on the plane $\mathbf{R}\times\mathbf{R}$ by
 declaring $(a_1,b_1)\approx(a_2,b_2)\iff b_1-a_1\in\mathbf{Z}$ and
-$b_2-a_2\in\mathbf{Z}$. [\S II.8.1, II.8.10]}{
+$b_2-a_2\in\mathbf{Z}$. [\S II.8.1, II.8.10]
+\end{problem}
 
+\begin{solution}
 Suppose $a,b,c\in\mathbf{R}$. We have that $a-a=0\in\mathbf{Z}$, so $\sim$ is
 reflexive. If $a\sim b$, then $b-a=k$ for some $k\in\mathbf{Z}$, so
 $a-b=-k\in\mathbf{Z}$, hence $b\sim a$. So $\sim$ is symmetric. Now, suppose that
@@ -175,13 +237,11 @@ $a\sim b$ and $b\sim c$, in particular that $b-a=k\in\mathbf{Z}$ and
 $c-b=l\in\mathbf{Z}$. Then $c-a=(c-b) + (b-a) = l+k\in\mathbf{Z}$, so $a\sim c$.
 So $\sim$ is transitive.
 
-\tpar
 An equivalence class $[a]_{\sim}\in\mathbf{R}\,/\!\sim$ is the set of integers
 $\mathbf{Z}$ transposed by some real number $\epsilon\in[0,1)$. That is, for
 every set $X\in\mathbf{R}\,/\!\sim$, there is a real number $\epsilon\in[0,1)$
 such that every $x\in X$ is of the form $k+\epsilon$ for some integer $k$.
 
-\tpar
 Now we will show that $\approx$ is an equivalence relation over
 $\mathbf{R}\times\mathbf{R}$. Supposing $a_1,a_2\in\mathbf{R}\times\mathbf{R}$,
 we have $a_1-a_1=a_2-a_2=0\in\mathbf{Z}$, so $(a_1,a_2)\approx(a_1,a_2)$. If we
@@ -197,21 +257,24 @@ $(c_1,c_2)-(b_1,b_2)=(l_1,l_2)\in\mathbf{Z}\times\mathbf{Z}$, so $(c_1,c_2) -
 k_2+l_2\in\mathbf{Z}\times\mathbf{Z}$. Thus $\approx$ is an equivalence
 relation.
 
-\tpar
 The interpretation of $\approx$ is similar to $\sim$. An equivalence class
 $X\in\mathbf{R}\times\mathbf{R}\,/\approx$ is just the 2-dimensional integer
 lattice $\mathbf{Z}\times\mathbf{Z}$ transposed by some pair of values
 $(\epsilon_1,\epsilon_2)\in[0,1)\times[0,1)$.
-\QEDA
+\end{solution}
 
-}
+
 
 \subsection{Functions between sets}
 
-\exercise
-{2.1}{How many different bijections are there between a set with $n$ elements
-and itself?}{
 
+% Problem 2.1
+\begin{problem}
+How many different bijections are there between a set with $n$ elements
+and itself?
+\end{problem}
+
+\begin{solution}
 A function $f:S\to S$ is a graph $\Gamma_f\subseteq S\times S$. Since $f$ is
 bijective, then for all $y\in S$ there exists a unique $x\in S$ such that
 $(x,y)\in\Gamma_f$. We can see that $\abs{\Gamma_f} = n$. Since each $x$ must be
@@ -225,28 +288,28 @@ $\Gamma_f$ is:
 
 Since $\abs{S} = n$, the number of permutations of $S$ is $n!$. Hence there can be
 $n!$ different bijections between $S$ and itself.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{2.2}{$\rhd$ Prove statement (2) in Proposition 2.1. You may assume that given a
+% Problem 2.2
+\begin{problem}
+$\rhd$ Prove statement (2) in Proposition 2.1. You may assume that given a
 family of disjoint subsets of a set, there is a way to choose one element in
 each member of the family. [\S2.5, V3.3]
 
 \begin{quote} \textbf{Proposition 2.1.} Assume $A\neq\empty$, and let $f:A\to B$ be a function. Then
 (1) $f$ has a left-inverse if and only if $f$ is injective; and \\
 (2) $f$ has a right-inverse if and only if $f$ is surjective.
-\end{quote}}{
+\end{quote}
+\end{problem}
 
+\begin{solution}
 Let $A\neq\empty$ and suppose $f:A\to B$ is a function.
 
-\tpar
 ($\implies$) Suppose there exists a function $g$ that is a right-inverse of $f$.
 Then $f\circ g = \id_A$. Let $b\in B$. We have that $f(g(b)) = b$, so there
 exists an $a = g(b)$ such that $f(a) = b$. Hence $f$ is surjective.
 
-\tpar
 ($\impliedby$) Suppose that $f$ is surjective. We want to construct a function
 $g:B\to A$ such that $f(g(a)) = a$ for all $a\in A$. Since $f$ is surjective,
 for all $b\in B$ there is an $a\in A$ such that $f(a) = b$. For each $b\in B$
@@ -263,21 +326,21 @@ pair $(a,b)$ ($a$ not necessarily unique) from each set in $\Lambda =
 Now, $g$ is a right-inverse of $f$. To show this, let $b\in B$. Since $f$ in
 surjective, $g$ has been defined such that when $a=g(b)$, $f(a)=b$, so we get
 that $f(g(b)) = (f\circ g)(b) = b$, thus $g$ is a right-inverse of $f$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{2.3}{Prove that the inverse of a bijection is a bijection and that the
-composition of two bijections is a bijection.}{
+% Problem 2.3
+\begin{problem}
+Prove that the inverse of a bijection is a bijection and that the
+composition of two bijections is a bijection.
+\end{problem}
 
-(1) Suppose $f:A\to B$ is a bijection, and that $f^{-1}:B\to A$ is its inverse.
+\begin{enumerate}
+\item Suppose $f:A\to B$ is a bijection, and that $f^{-1}:B\to A$ is its inverse.
 We have that $f\circ f^{-1} = \id_B$ and $f^{-1}\circ f = \id_A$. Hence $f$ is
 the left- and right-inverse of $f^{-1}$, so $f^{-1}$ must be a bijection.
-\QEDA
 
-\tpar
-(2) Let $f:B\to C$ and $g:A\to B$ be bijections, and consider $f\circ g$. To
+\item Let $f:B\to C$ and $g:A\to B$ be bijections, and consider $f\circ g$. To
 show that $f$ is injective, let $a, a'\in A$ such that $(f\circ g)(a) = (f\circ
 g)(a')$. Since $f$ is a bijection, $f(g(a)) = f(g(a')) \implies g(a) = g(a')$.
 Also, since $g$ is a bijection, $g(a) = g(a') \implies a=a'$. Hence $f\circ g$
@@ -285,12 +348,16 @@ is injective. Now, let $c\in C$. Since $f$ is surjective, there is a $b\in B$
 such that $f(b) = c$. Also, since $g$ is surjective, there is an $a\in A$ such
 that $g(a) = b$; this means that there is an $a\in A$ such that $(f\circ g)(a) =
 c$. So $f\circ g$ is bijective.
+\end{enumerate}
 
-}
 
-\exercise{2.4}{$\rhd$ Prove that `isomorphism' is an equivalence relation (on any set
-of sets.) [\S4.1]}{
+% Problem 2.4
+\begin{problem}
+$\rhd$ Prove that `isomorphism' is an equivalence relation (on any set
+of sets.) [\S4.1]
+\end{problem}
 
+\begin{solution}
 Let $S$ be a set. Then $\id_S$ is a bijection from $S$ to itself, so $S\cong S$.
 Let $T$ be another set with $S\cong T$, i.e. that there exists a bijection
 $f:S\to T$. Since $f$ is a bijection, it has an inverse $f^{-1}:T\to S$, so
@@ -299,19 +366,22 @@ bijections $f:S\to T$ and $g:T\to U$, i.e. that $S\cong T$ and $T\cong U$. From
 exercise \textbf{I.2.3} we know that the composition of bijections is itself a
 bijection. This means that $g\circ f: S\to U$ is a bijection, so $S\cong U$.
 Hence $\cong$ is an equivalence relation.
-\QEDA
+\end{solution}
 
-}
 
-\exercise{2.5}{$\rhd$ Formulate a notion of \textit{epimorphism}, in the style
+% Problem 2.5
+\begin{problem}
+$\rhd$ Formulate a notion of \textit{epimorphism}, in the style
 of the notion of \textit{monomorphism} seen in \S 2.6, and prove a result
-analogous to Proposition 2.3, for epimorphisms and surjections.}{
+analogous to Proposition 2.3, for epimorphisms and surjections.
+\end{problem}
+
+\begin{solution}
 A function $f:A\to B$ is an \textit{epimorphism} if and only if for all sets $Z$
 and all functions $b':Z\to B$, there is a function $a':Z\to A$ such that $f\circ
 a' = b'$. Now we will show that $f$ is a surjection if and only if it is an
 epimorphism.
 
-\tpar
 ($\implies$) Suppose that $f:A\to B$ is surjective. Let $Z$ be a set and
 $b':Z\to B$ a function. We need to construct a function $a':Z\to A$ such that
 $f\circ a' = b'$. Fix $z\in Z$. Suppose $b=b'(z)\in B$. Since $b\in B$ and $f$
@@ -319,39 +389,43 @@ is surjective, there exists an $a\in A$ such $f(a) = b$. Now, define $a'(z) =
 a$ this way for each $z\in Z$. Then $f\circ a'(z) = b'(z)$ for all $z\in Z$, so
 $f\circ a' = b'$. Hence $f$ is an epimorphism.
 
-\tpar
 ($\impliedby$) Suppose that $f$ is an epimorphism. Let $b':B\to B$ be a
 bijection. Since $f$ is an epimophism, there is a function $a':B\to A$ such that
 $f\circ a' = b'$. Let $b\in B$. Since $b'$ is a bijection, there is a unique
 element $y\in B$ such that $b'(y) = b$. Furthermore, we have that $(f\circ
 a')(y) = b$. In other words, $a = a'(y)$ is an element in $a$ such that $f(a) =
 b$. Hence $f$ is surjective, as required.
-\QEDA
+\end{solution}
 
-}
 
-\exercise{2.6}{With notation as in Example 2.4, explain how any function $f:A\to
-B$ determines a section of $\pi_A$.}{
+% Problem 2.6
+\begin{problem}
+With notation as in Example 2.4, explain how any function $f:A\to B$ determines
+a section of $\pi_A$.
+\end{problem}
 
+\begin{solution}
 Let $f:A\to B$ and let $\pi_A:A\times B\to A$ be such that $\pi_A(a,b) = a$ for
 all $(a,b)\in A\times B$. Construct $g:A\to A\times B$ defined as $g(a) = (a,
 f(a))$ for all $a\in A$. The function $g$ can be thought of as `determined by'
 $f$. Now, since $(\pi_A\circ g)(a) = \pi_A(g(a)) = \pi_A(a, f(a)) = a$ for all
 $a\in A$, $g$ is a right inverse of $\pi_A$, i.e. $g$ is a section of $\pi_A$ as
 required.
-\QEDA
+\end{solution}
 
-}
 
-\exercise{2.7}{Let $f:A\to B$ be any function. Prove that the graph $\Gamma_f$
-of $f$ is isomorphic to $A$.}{
+% Problem 2.7
+\begin{problem}
+Let $f:A\to B$ be any function. Prove that the graph $\Gamma_f$ of $f$ is
+isomorphic to $A$.
+\end{problem}
 
+\begin{solution}
 Recall that sets $\Gamma_A$ and $A$ are \textit{isomorphic}, written
 $\Gamma_A\cong A$, if and only if there exists a bijection $g:\Gamma_A\to A$.
 Let's construct such a function $g$, defined to be $g(a,b) = a$. Keep in mind
 that here $(a,b)\in\Gamma_f\subseteq A\times B$.
 
-\tpar
 Let $(a',b'),(a'',b'')\in\Gamma_f$ such that $f(a',b') = f(a'',b'')$. For
 contradiction, suppose that $(a',b')\neq (a'',b'')$. Since $f(a',b') = a' = a''
 = f(a'',b'')$, it must be that $b'\neq b''$. However, this would mean that both
@@ -359,24 +433,25 @@ $(a',b')$ and $(a',b'')$ are in $\Gamma_f$; this would mean that $f(a') = b'
 \neq b'' = f(a')$, which is impossible since $f$ is a function. Hence $g$ is
 injective.
 
-\tpar
 Let $a'\in A$. Since $f$ is a well-defined function with $A$ as its domain,
 there must exists a pair $(a',b')\in\Gamma_f$ for some $b'\in B$, in particular
 that $g(a',b') = a'$; thus $g$ is surjective, so it is a bijection.
-\QEDA
+\end{solution}
 
-}
 
-\exercise{2.8}{Describe as explicitly as you can all terms in the canonical
-decomposition (cf. \S2.8) of the function $\mathbf{R}\to\mathbf{C}$ defined by
-$r\mapsto e^{2\pi ir}$. (This exercise matches one previously. Which one?)}{
+% Problem 2.8.
+\begin{problem}
+Describe as explicitly as you can all terms in the canonical decomposition (cf.
+\S2.8) of the function $\mathbf{R}\to\mathbf{C}$ defined by $r\mapsto e^{2\pi
+ir}$. (This exercise matches one previously. Which one?)
+\end{problem}
 
+\begin{solution}
 Let $f:\mathbf{R}\to\mathbf{C}$ be as above. The first piece in the canonical
 decomposition is the equivalence relation $\sim$ defined as $x \sim x' \iff f(x) =
 f(x')$, i.e. $[x]_{\sim}$ is the set of all elements in $\mathbf{R}$ that get
 mapped to the same element in $\mathbf{C}$ by $f$ as $x$.
 
-\tpar
 The second piece is the set $\mathscr{P}_{\sim}$. This set is the set of all
 equivalence classes of $\mathbf{R}$ over equality up to $f$. Note that, since
 $f(x) = e^{2\pi i x} = \cos(2\pi x) + i\sin(2\pi x)$, $f$ is periodic with
@@ -390,7 +465,6 @@ and it is here when we notice uncanny similarities to exercise \textbf{1.6}
 where $x\sim y$, for $x,y\in\mathbf{R}$, if and only if $x-y\in\mathbf{Z}$, in
 which we could have written $\mathscr{P}_{\sim}$ in the same way. 
 
-\tpar
 Now we will explain the mysterious $\tilde{f}:\mathscr{P}_{\sim}\to\im f$. This
 function is taking each \textit{equivalence class} $[x]_{\sim}$ over the reals
 w.r.t. $\sim$ and mapping it to the element in $\mathbf{C}$ that $f$ maps each
@@ -407,27 +481,29 @@ $\im f$ is to say that there is an $x\in\mathbf{R}$ such that $f(x) = y$; so
 there must be an equivalence class $[x]_{\sim}$ which is mapped to $y$ by
 $\tilde{f}$.
 
-\tpar
 Finally, the simple map from $\im f\to\mathbf{C}$ that simply takes $c\mapsto
 c$. This can be thought of as a potential ``expansion'' of the domain of
 $\tilde{f}$. It is obviously injective, since (trivially) $c\neq c'\implies
 c\neq c'$. However, it may not be surjective: for example, $2\in\mathbf{C}$ is
 not in $\im f$ as it is defined above.
+\end{solution}
 
-}
 
-\exercise{2.9}{$\rhd$ Show that if $A'\cong A''$ and $B'\cong B''$, and further
+% Problem 2.9
+\begin{problem}
+$\rhd$ Show that if $A'\cong A''$ and $B'\cong B''$, and further
 $A'\cap B'=\emptyset$ and $A''\cap B''=\emptyset$, then $A'\cup B'\cong A''\cup
 B''$. Conclude that the operation $A\sqcup B$ is well-defined up to
-\textit{isomorphism} (cf. \S2.9) [\S2.9, 5.7]}{
+\textit{isomorphism} (cf. \S2.9) [\S2.9, 5.7]
+\end{problem}
 
+\begin{solution}
 Let $A',A'',B',B''$ be sets as described above. Since $A'\cong A''$ and $B'\cong
 B''$, we know there exists respective bijections $f:A'\to A''$ and $g:B'\to
 B''$. Now, we wish to show that $A'\cup B'\cong A''\cup B''$. Define a function
 $h:A'\cup B'\to A''\cup B''$ such that $h(x) = f(x)$ if $x\in A'$ and $g(x)$ if
 $x\in B'$.
 
-\tpar
 We will now show that $h$ is a bijection. Let $y\in A''\cup B''$. Then, since
 $A''\cap B''=\emptyset$, either $y\in A''$ or $y\in B''$. Without loss of
 generality suppose that $y\in A''$. Then, since $f:A'\to A''$ is a bijection, it
@@ -439,20 +515,21 @@ Now, without loss of generality if $x\in A'$ and $x'\in B'$, then $h(x) = f(x)
 \neq g(x') = h(x')$ since $A''\cap B''=\emptyset$. Hence $h$ is a bijection, so
 $A'\cup B'\cong A''\cup B''$.
 
-\tpar
 Since these constructions of $A',A'',B',B''$ correspond to creating ``copies''
 of sets $A$ and $B$ for use in the disjoint union operation, we have that
 disjoint union is a well-defined function \textit{up to isomorphism}. In
 particular, since $\cong$ is an equivalence relation, we can consider $\sqcup$
 to be well-defined from $\mathscr{P}_{\cong}$ to $A'\cup B'$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{2.10}{$\rhd$ Show that if $A$ and $B$ are finite sets, then $\abs{B^A} =
-\abs{B}^{\abs{A}}$. [\S2.1, 2.11, I.4.1]}{
+% Problem 2.10
+\begin{problem}
+$\rhd$ Show that if $A$ and $B$ are finite sets, then $\abs{B^A} =
+\abs{B}^{\abs{A}}$. [\S2.1, 2.11, I.4.1]
+\end{problem}
 
+\begin{solution}
 Let $A$ and $B$ be sets with $\abs{A}=n$ and $\abs{B}=m$, with $n,m$ being
 non-negative integers. Recall that $B^A$ denotes the set of functions $f:A\to
 B$. Now, if $A=B=\emptyset$ or $A=\emptyset$ and $\abs{B}=1$, we get one
@@ -463,7 +540,6 @@ no well-defined function can exist from $A$ to $B$ since there will be no value
 for the elements in $A$ to take; this explains $\abs{B^A} = \abs{B}^{\abs{A}} =
 0^{\abs{A}} = 0$.
 
-\tpar
 Suppose that $B\neq\emptyset$ and $B$ is finite. We will show inductively that
 $\abs{B^A} = \abs{B}^{\abs{A}}$. First, suppose that $\abs{A} = 1$.  Then there
 are exactly $\abs{B}$ functions from $A$ to $B$: if $B=\set{b_1,b_2,\dots,b_m}$,
@@ -477,16 +553,18 @@ functions from $A\backslash\{a\}$ to $B$.  Then, for each of those functions
 $f\in F$, there is $\abs{B}$ ``choices'' of where to assign $a$: one choice for
 each element in $B$. Hence, $\abs{B^A} = \abs{B}\abs{B}^{\abs{A}-1} =
 \abs{B}^{\abs{A}}$ as required.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{2.11}{$\rhd$ In view of Exercise 2.10, it is not unreasonable to use $2^A$ to denote
+% Problem 2.11
+\begin{problem}
+$\rhd$ In view of Exercise 2.10, it is not unreasonable to use $2^A$ to denote
 the set of functions from an arbitrary set $A$ to a set with $2$ elements (say
 $\{0,1\}$). Prove that there is a bijection between $2^A$ and the \textit{power
-set} of $A$ (cf. \S1.2). [\S1.2, III.2.3]}{
+set} of $A$ (cf. \S1.2). [\S1.2, III.2.3]
+\end{problem}
 
+\begin{solution}
 Let $S = \{0,1\}$, and consider $f:\mathcal{P}(A)\to 2^A$, defined as
 
 \[ f(X) = \set{(a,1) \text{ if $a\in X$, and }(a,0) \text{ otherwise}} \]
@@ -498,14 +576,16 @@ set such that $A_1\in\mathcal{P}(A)$, and $f(A_1)=g$. Hence $f$ is surjective.
 Now, suppose that $X,Y\subseteq A$ and $f(X) = f(Y)$. Then, for all $a\in A$,
 $a\in X \iff f(X)(a) = 1 \iff f(Y)(a) = 1 \iff a\in Y$. Hence $f$ is injective,
 so $2^A\cong\mathcal{P}(A)$.
-\QEDA
+\end{solution}
 
-}
+
 
 \subsection{Category theory}
 
-\exercise
-{3.1}{$\rhd$ Let $\mathsf{C}$ be a category. Consider a structure
+
+% Problem 3.1
+\begin{problem}
+$\rhd$ Let $\mathsf{C}$ be a category. Consider a structure
 $\mathsf{C}^{op}$ with
 \begin{enumerate}
 \item $\Obj(\mathsf{C}^{op}) = \Obj(\mathsf{C})$
@@ -517,8 +597,10 @@ in $\mathsf{C}^{op}$ and verify the properties listed in \S3.1).
 
 Intuitively, the `opposite' category $\mathsf{C}^{op}$ is simply obtained by
 `reversing all the arrows' in $\mathsf{C}$. [5.1, \S III.1.1, \S IX.1.2,
-IX.1.10]}{
+IX.1.10]
+\end{problem}
 
+\begin{solution}
 For objects $A,B,C\in\Obj(\mathsf{C}^{op})$, the set of morphisms between $A$
 and $B$ in $\mathsf{C}^{op}$, $\Hom_{\mathsf{C}^{op}}(A,B)$, is defined as
 $\Hom_{\mathsf{C}}(B, A)$. Similarly for the morphisms between $B$ and $C$. So
@@ -542,7 +624,6 @@ The domain and codomain of $\circ_{\mathsf{C}}$ and $\circ_{\mathsf{C}^{op}}$
 match (up to transposing the coordinates in the domain) due to the equality of
 $\Hom_{\mathsf{C}}(A,B)$ with $\Hom_{\mathsf{C}^{op}}(B,A)$.
 
-\tpar
 To show that this composition makes $\mathsf{C}^{op}$ a category, first we note
 that the fact that $\mathsf{C}$ is a category implies the existence of a
 morphism $1_{A}$ taking $A$ to itself where $A\in\Obj(\mathsf{C})$; this
@@ -566,25 +647,29 @@ objects $A,B,C,D\in\Obj(\mathsf{C})$ where $A\neq C$ and $B\neq D$,
 clearly $\Hom_{\mathsf{C}}(B,A)\cap\Hom_{\mathsf{C}}(D,C)=\emptyset$ is true iff 
 $\Hom_{\mathsf{C^{op}}}(A,B)\cap\Hom_{\mathsf{C^{op}}}(C,D)=\emptyset$. Hence
 $\mathsf{C}^{op}$ is a category.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{3.2}{If $A$ is a finite set, how large is $\mathrm{End}_{\mathsf{Set}}(A)$?}{
+% Problem 3.2
+\begin{problem}
+If $A$ is a finite set, how large is $\mathrm{End}_{\mathsf{Set}}(A)$?
+\end{problem}
 
+\begin{solution}
 The set $\mathrm{End}_{\mathsf{Set}}(A)$ is the set of functions $f:A\to A$.
 Since $A$ is finite, write $\abs{A} = n$ for some $n\in\mathbf{Z}$. By exercise
 2.10, we know that $\abs{A^A} = \abs{A}^{\abs{A}} = n^n$. So the the set
 $\mathrm{End}_{\mathsf{Set}}(A)$ has size $n^n$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{3.3}{$\rhd$ Formulate precisely what it means to say that $1_a$ is an identity
-with respect to composition in Example 3.3, and prove this assertion. [\S3.2]}{
+% Problem 3.3
+\begin{problem}
+$\rhd$ Formulate precisely what it means to say that $1_a$ is an identity with
+respect to composition in Example 3.3, and prove this assertion. [\S3.2]
+\end{problem}
 
+\begin{solution}
 Let $S$ be a set and $\sim$ be a binary relation on the set $S$. Then, for
 elements $a,b\in S$, $\Hom(a,b)$ is the pair $(a,b)\in S\times S$ if $a\sim b$,
 or $\emptyset$ otherwise. Composition of morphisms $(a,b)$ and $(b,c)$ is simply
@@ -593,24 +678,28 @@ $1_a = (a,a)$, for $a\in S$, is \textit{an identity with respect to composition}
 if, for any $b\in S$, $(a,b)(a,a) = (a,b)$. Now, if $a\sim a$ and $a\sim b$,
 then trivially it is the case that $a\sim b$; hence $(a,b)(a,a) = (a,b)$, and
 $1_a$ is an identity w.r.t. composition as required.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{3.4}{Can we define a category in the style of Example 3.3 using the relation
-$<$ on the set $\mathbf{Z}$?}{
+% Problem 3.4
+\begin{problem}
+Can we define a category in the style of Example 3.3 using the relation $<$ on
+the set $\mathbf{Z}$?
+\end{problem}
 
+\begin{solution}
 No, we can't. This is because $<$ isn't reflexive: $x\not<x$ for any
 $x\in\mathbf{Z}$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{3.5}{$\rhd$ Explain in what sense Example 3.4 is an instance of the categories
-considered in Example 3.3. [\S 3.2]}{
+% Problem 3.5
+\begin{problem}
+$\rhd$ Explain in what sense Example 3.4 is an instance of the categories
+considered in Example 3.3. [\S 3.2]
+\end{problem}
 
+\begin{solution}
 Let $S$ be a set. Example 3.4 considers the category $\hat{S}$ with objects
 $\Obj(\hat{S}) = \mathscr{P}(S)$ and morphisms $\Hom_{\hat{S}}(A,B) =
 \set{(A,B)}$ if $A\subseteq B$ and $\emptyset$ otherwise, for all sets
@@ -619,19 +708,20 @@ explained in Example 3.3 because $\subseteq$ is a reflexive and transitive
 operation on the power set of any set $S$. Indeed, for $X,Y,Z\subseteq S$, we have
 that $X\subseteq X$ and, if $X\subseteq Y$ and $Y\subseteq Z$, then if $x\in X$,
 then $x\in Y$ and $x\in Z$ so $X\subseteq Z$.
-\QEDA
+\end{solution}
 
-}
 
-\exercise
-{3.6}{$\rhd$ (Assuming some familiarity with linear algebra.) Define a category
+% Problem 3.6
+\begin{problem}
+$\rhd$ (Assuming some familiarity with linear algebra.) Define a category
 $\mathsf{V}$ by taking $\Obj(\mathsf{V}) = \mathbf{N}$ and letting
-$\Hom_{\mathsf{V}}(m,n) = \text{ the set of $m\times n$ matrices with real
-entries,}$ for all $m,n\in\mathbf{N}$. (We will leave the reader the task of
+$\Hom_{\mathsf{V}}(m,n) = $ the set of $m\times n$ matrices with real
+entries, for all $m,n\in\mathbf{N}$. (We will leave the reader the task of
 making sense of a matrix with 0 rows or columns.) Use product of matrices to
-define composition. Does this category `feel' familiar? [\S VI.2.1, \S
-VIII.1.3]}{
+define composition. Does this category `feel' familiar? [\S VI.2.1, \S VIII.1.3]
+\end{problem}
 
+\begin{solution}
 Yes! It is yet another instance of Example 3.3. The binary relation $\sim$ on
 $\mathbf{N} \times \mathbf{N}$ holds for all values $(n,m)\in\mathbf{N} \times
 \mathbf{N}$, and means that a matrix of size $m\times n$ ``can be built''. It is
@@ -639,13 +729,16 @@ reflexive trivially. It is transitive trivially as well---a matrix of any size
 can be built. However, it would also hold, for example, if we had to in some
 sense ``deduce'' that a $3\times 3$ matrix could be built using the fact that
 $3\times 1$ and $1\times 3$ matrices can be built.
+\end{solution}
 
-}
 
-\exercise
-{3.7}{$\rhd$ Define carefully the objects and morphisms in Example 3.7, and draw
-the diagram corresponding to compositon. [\S 3.2]}{
+% Problem 3.7
+\begin{problem}
+$\rhd$ Define carefully the objects and morphisms in Example 3.7, and draw the
+diagram corresponding to compositon. [\S 3.2]
+\end{problem}
 
+\begin{solution}
 \def \C {\mathsf{C}}
 \def \CA {\mathsf{C}^A}
 
@@ -655,40 +748,46 @@ objects $f,g\in\Obj(\CA)$, $f:A\to Z_1$ and $g:A\to Z_2$, we define the
 morphisms $\Hom_\CA(f,g)$ to be the morphisms $\sigma\in\Hom_\C(Z_1, Z_2)$ such
 that $g=\sigma f$. Now we must check that these morphisms satisfy the axioms.
 
-\tpar
 \begin{enumerate}
-  \item Let $f\in\Obj(\CA)\in\Hom_\C(A,Z)$ for some object $Z\in\Obj(\C)$. Then
+\item Let $f\in\Obj(\CA)\in\Hom_\C(A,Z)$ for some object $Z\in\Obj(\C)$. Then
 there exists an identity morphism $1_Z\in\Hom_\C(Z,Z)$ since $\C$ is a category.
 This is a morphism such that $f=1_zf$, so $\Hom_\CA(f,f)$ is also nonempty.
-  \item Let $f,g,h\in\Obj(\CA)$ such that there are morphisms
+
+\item Let $f,g,h\in\Obj(\CA)$ such that there are morphisms
 $\sigma\in\Hom_\CA(f,g)$ and $\tau\in\Hom_\CA(g,h)$. Then there is a morphism
 $\upsilon\in\Hom_\CA(f,h)$, namely $\tau\sigma$, which exists because of
 morphism composition in $\C$. For clarity, we write that  $f:A\to Z_1$, $g:A\to
 Z_2$, $h:A\to Z_3$, with $\sigma:Z_1\to Z_2$ and $\tau:Z_2\to Z_3$. We have
 $g=\sigma f$ and $h=\tau g$. Hence, $\upsilon f = \tau\sigma f = \tau g = h$ as
 required.
-  \item Lastly, let $f,g,h,i\in\Obj(\CA)$ with $Z_1, Z_2, Z_3, Z_4$ codomains
+
+\item Lastly, let $f,g,h,i\in\Obj(\CA)$ with $Z_1, Z_2, Z_3, Z_4$ codomains
 respectively, and with $\sigma\in\Hom_\CA(f,g)$, $\tau\in\Hom_\CA(g,h)$, and
 $\upsilon\in\Hom_\CA(h,i)$. Since $\sigma$, $\tau$, and $\upsilon$ are morphisms
 in $\C$ taking $Z_1\to Z_2$, etc., morphism composition is associative; hence
 morphism composition is associative in $\CA$ as well.
 \end{enumerate}
+\end{solution}
 
-\QEDA
 
-}
+% Problem 3.8
+\begin{problem}
+\def \C {\mathsf{C}}
+\def \Cp {\C'}
 
-{ \def \C {\mathsf{C}} \def \Cp {\C'}
-\exercise
-{3.8}{$\rhd$ A \textit{subcategory} $\Cp$ of a category $\C$ consists of a
+$\rhd$ A \textit{subcategory} $\Cp$ of a category $\C$ consists of a
 collection of objects of $\C$, with morphisms
 $\Hom_\Cp(A,B) \subseteq \Hom_\C(A,B)$ for all objects $A,B\in\Obj(\Cp)$, such
 that identities and compositions in $\C$ make $\Cp$ into a category. A
 subcategory $\Cp$ is \textit{full} if $\Hom_\Cp(A,B) = \Hom_\C(A,B)$ for all
 $A,B\in\Obj(\Cp)$. Construct a category of \textit{infinite sets} and explain
 how it may be viewed as a full subcategory of $\mathsf{Set}$. [4.4,\S VI.1.1, \S
-VIII.1.3]}{
+VIII.1.3]
+\end{problem}
 
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \Cp {\C'}
 \def \Set {\mathsf{Set}}
 \def \ISet {\mathsf{Inf}\mathsf{Set}}
 
@@ -698,12 +797,15 @@ to $B$. Since $\Hom_\Set(A,B)$ is just the set of all functions from $A$ to $B$
 and not, say, the set of all functions from subsets of $A$ that are in
 $\Obj(\Set)$ to $B$, $\ISet$ is full since $\Hom_\ISet(A,B)=\Hom_\Set(A,B)$ for
 all infinite sets $A,B\in\Obj(\ISet)$.
+\end{solution}
 
-}}
 
-{\def \Set {\mathsf{Set}} \def \MSet {\mathsf{MSet}}
-\exercise
-{3.9}{$\rhd$ An alternative to the notion of \textit{multiset} introduced in
+% Problem 3.9
+\begin{problem}
+\def \Set {\mathsf{Set}}
+\def \MSet {\mathsf{MSet}}
+
+$\rhd$ An alternative to the notion of \textit{multiset} introduced in
 \S2.2 is obtained by considering sets endowed with equivalence relations;
 equivalent elements are taken to be multiple instance of elements `of the same
 kind'. Define a notion of morphism between such enhanced sets, obtaining a
@@ -714,7 +816,12 @@ defined in \S2.2 and how? Spell out what a morphism of multisets would be from
 this point of view. (There are several natural motions of morphisms of
 multisets. Try to define morphisms in $\MSet$ so that the notion you obtain for
 ordinary multisets captures your intuitive understanding of these objects.)
-[\S2.2, \S3.2, 4.5]}{
+[\S2.2, \S3.2, 4.5]
+\end{problem}
+
+\begin{solution}
+\def \Set {\mathsf{Set}}
+\def \MSet {\mathsf{MSet}}
 
 Define $\Obj(\MSet)$ as all tuples $(S, \sim)$ where $S$ is a set and $\sim$ is
 an equivalence relation on $S$. For two multisets $\hat{S} = (S,\sim), \hat{T} =
@@ -723,7 +830,6 @@ $f\in\Hom_\MSet(\hat{S},\hat{T})$ to be a set-function $f:S\to T$ such that, for
 $x,y\in S$, $x\sim y\implies f(x)\approx f(y)$, and morphism composition the
 same way as set-functions. Now we verify the axioms:
 
-\tpar
 \begin{enumerate}
 \item For a multiset $(S,\sim)$, we borrow the set-function $1_S:S\to S$ and
 note that it necessarily preserves equivalence, i.e. $x\sim y\implies 1_S(x)\sim
@@ -747,34 +853,47 @@ equivalence relations $\sim$ such that both $S$ and $\mathscr{P}_\sim$ are
 uncountable; this way, one cannot construct a function $m:S\to\mathbf{N}$
 corresponding to each set in the partition $\mathscr{P}_\sim$, since
 $\mathbf{N}$ is countable.
+\end{solution}
 
-}}
 
-{\def \C {\mathsf{C}} \def \Set {\mathsf{Set}}
-\exercise
-{3.10}{Since the objects of a category $\C$ are not (necessarily) sets, it is
-not clear how to make sense of a notion of `subobject' in general. In some
-situations it \textit{does} make sense to talk about subobjects, and the
-subobjects of any given object $A$ in $\C$ are in one-to-one correspondence with
-the morphisms $A\to\Omega$ for a fixed, special object $\Omega$ of $\C$, called
-a \textit{subobject classifier}. Show that $\Set$ has a subobject classifier.}{
+% Problem 3.10
+\begin{problem}
+\def \C {\mathsf{C}}
+\def \Set {\mathsf{Set}}
+
+Since the objects of a category $\C$ are not (necessarily) sets, it is not clear
+how to make sense of a notion of `subobject' in general. In some situations it
+\textit{does} make sense to talk about subobjects, and the subobjects of any
+given object $A$ in $\C$ are in one-to-one correspondence with the morphisms
+$A\to\Omega$ for a fixed, special object $\Omega$ of $\C$, called a
+\textit{subobject classifier}. Show that $\Set$ has a subobject classifier.
+\end{problem}
+
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \Set {\mathsf{Set}}
 
 Let $A\in\Obj(\Set)$. Any set $X\subseteq A$ corresponds to a mapping
 $A\to\{0,1\}$; the elements $x\in A$ that are also in $X$ are mapped to $1$, and
 the elements $x\in A$ that aren't in $X$ are mapped to $0$. Hence the
 ``subobject classifier'' for $\Set$ is $\Omega=\{0,1\}$.
+\end{solution}
 
-}}
 
-{\def \C {\mathsf{C}}
-\exercise
-{3.11}{$\rhd$ Draw the relevant diagrams and define composition and identities
-for the category $\C^{A,B}$ mentioned in Example 3.9. Do the same for the
-category $\C^{\alpha,\beta}$ mentioned in Example 3.10. [\S5.5, 5.12]}{
+% Problem 3.11
+\begin{problem}
+\def \C {\mathsf{C}}
 
-\textit{I will do this with pen and paper. The diagrams are too annoying to
-\LaTeX}.
+$\rhd$ Draw the relevant diagrams and define composition and identities for the
+category $\C^{A,B}$ mentioned in Example 3.9. Do the same for the category
+$\C^{\alpha,\beta}$ mentioned in Example 3.10. [\S5.5, 5.12]
+\end{problem}
 
-}}
+\begin{solution}
+\def \C {\mathsf{C}}
+
+Let $\C$ be a category, with $A,B\in\Obj(\C)$. The objects of $\C^{A,B}$ are
+then diagrams:
+\end{solution}
 
 \end{document}
