@@ -97,7 +97,6 @@
 \newcommand{\abs}[1]{\left|#1\right|}
 
 \begin{document}
-\pdfrender{StrokeColor=black,TextRenderingMode=2,LineWidth=0.3pt}
 
 
 
@@ -188,13 +187,13 @@ From the definition of an equivalence relation and the solution to problem
 a partition of $S$. Thus the number of equivalence relations on $S$ is equal to
 the number of partitions of $S$. Since $\{1,2,3\}$ is small we can determine
 this by hand:
-
+%
 \[ \mathscr{P}_0 = \set{\{1,2,3\}} \]
 \[ \mathscr{P}_1 = \set{\{1\},\{2\},\{3\}\}} \]
 \[ \mathscr{P}_2 = \set{\{1,2\},\{3\}} \]
 \[ \mathscr{P}_3 = \set{\{1\},\{2,3\}} \]
 \[ \mathscr{P}_4 = \set{\{1,3\},\{2\}} \]
-
+%
 Thus there can be only $5$ equivalence relations defined on $\{1,2,3\}$.
 \end{solution}
 
@@ -287,9 +286,9 @@ exactly one pair in $\Gamma_f$. Furthermore, if we order the elements $(x,y)$ in
 $\Gamma_f$ by the first component, we can see that $\Gamma_f$ is just a
 permutation on the $n$ elements in $S$. For example, for $S=\{1,2,3\}$ one such
 $\Gamma_f$ is:
-
+%
 \[ \set{ (1,3), (2,2), (3,1) } \]
-
+%
 Since $\abs{S} = n$, the number of permutations of $S$ is $n!$. Hence there can be
 $n!$ different bijections between $S$ and itself.
 \end{solution}
@@ -318,15 +317,15 @@ exists an $a = g(b)$ such that $f(a) = b$. Hence $f$ is surjective.
 $g:B\to A$ such that $f(g(a)) = a$ for all $a\in A$. Since $f$ is surjective,
 for all $b\in B$ there is an $a\in A$ such that $f(a) = b$. For each $b\in B$
 construct a set $\Lambda_b$ of such pairs:
-
+%
 \[ \Lambda_b = \set{ (a,b) \mid a \in A, f(a) = b } \]
-
+%
 Note that $\Lambda_b$ is non-empty for all $b\in B$. So that we can choose one
 pair $(a,b)$ ($a$ not necessarily unique) from each set in $\Lambda =
 \set{\Lambda_b\mid b\in B}$ to define $g:B\to A$:
-
+%
 \[ g(b) = a, \text{ where $a$ is in some $(a,b)\in\Lambda_b$} \]
-
+%
 Now, $g$ is a right-inverse of $f$. To show this, let $b\in B$. Since $f$ in
 surjective, $g$ has been defined such that when $a=g(b)$, $f(a)=b$, so we get
 that $f(g(b)) = (f\circ g)(b) = b$, thus $g$ is a right-inverse of $f$.
@@ -461,10 +460,10 @@ equivalence classes of $\mathbf{R}$ over equality up to $f$. Note that, since
 $f(x) = e^{2\pi i x} = \cos(2\pi x) + i\sin(2\pi x)$, $f$ is periodic with
 period $1$. That is, $f(x) = e^{2\pi i x} = e^{2\pi i x + 2\pi} = e^{2\pi i (x +
 1)} = f(x+1)$. In other words, we can write $\mathscr{P}_{\sim}$ as,
-
+%
 \[ \mathscr{P}_{\sim} = \set{\set{r + k\mid k\in\mathbf{Z}}\mid
 r\in[0,1)\subseteq\mathbf{R}}, \]
-
+%
 and it is here when we notice uncanny similarities to exercise \textbf{1.6}
 where $x\sim y$, for $x,y\in\mathbf{R}$, if and only if $x-y\in\mathbf{Z}$, in
 which we could have written $\mathscr{P}_{\sim}$ in the same way. 
@@ -570,9 +569,9 @@ set} of $A$ (cf. \S1.2). [\S1.2, III.2.3]
 
 \begin{solution}
 Let $S = \{0,1\}$, and consider $f:\mathcal{P}(A)\to 2^A$, defined as
-
+%
 \[ f(X) = \set{(a,1) \text{ if $a\in X$, and }(a,0) \text{ otherwise}} \]
-
+%
 We will show that $f$ is bijective. Let $g\in 2^A$. Then $f$ is a
 function from $A$ to $S$. Let $A_1 = \set{a\in A\mid g(a) = 1}$. Then $A_1$ is a
 set such that $A_1\in\mathcal{P}(A)$, and $f(A_1)=g$. Hence $f$ is surjective.
@@ -615,14 +614,14 @@ set-function $\circ_{\mathsf{C}} : \Hom_{\mathsf{C}}(C,B) \times
 objects $A,B,C\in\Obj(\mathsf{C})=\Obj(\mathsf{C}^{op})$; we shall define the
 composition of morphisms $f:A\to B$ and $g:B\to C$ in $\mathsf{C}^{op}$ with
 this function. Precisely, we define
-
+%
 \[ \circ_{\mathsf{C}^{op}}: \Hom_{\mathsf{C}^{op}}(A,B) \times
 \Hom_{\mathsf{C}^{op}}(B,C) \to \Hom_{\mathsf{C}^{op}}(A,C) \]
-
+%
 to be
-
+%
 \[ \circ_{\mathsf{C}^{op}}(f,g) = \circ_{\mathsf{C}}(g,f) \]
-
+%
 for all $f\in\Hom_{\mathsf{C}^{op}}(A,B)$ and $f\in\Hom_{\mathsf{C}^{op}}(B,C)$.
 The domain and codomain of $\circ_{\mathsf{C}}$ and $\circ_{\mathsf{C}^{op}}$
 match (up to transposing the coordinates in the domain) due to the equality of
@@ -635,17 +634,17 @@ morphism is thus also present in $\Hom_{\mathsf{C}^{op}}(A,A) =
 \Hom_{\mathsf{C}}(A,A)$. Secondly, for objects $A,B,C,D\in\Obj(\mathsf{C})$, any
 morphisms $f\in\Hom_{\mathsf{C}^{op}}(A,B)$, $g\in\Hom_{\mathsf{C}^{op}}(B,C)$,
 and $h\in\Hom_{\mathsf{C}^{op}}(C,D)$ are associative, since
-
+%
 \[ (h \circ_{\mathsf{C}^{op}} g) \circ_{\mathsf{C}^{op}} f = f
 \circ_{\mathsf{C}} (g \circ_{\mathsf{C}} h) = (f \circ_{\mathsf{C}} g)
 \circ_{\mathsf{C}} h = h \circ_{\mathsf{C}^{op}} (g \circ_{\mathsf{C}^{op}} f).
 \]
-
+%
 Finally, for any morphism $f\in\Hom_{\mathsf{C}^{op}}(A,B)$ we have,
-
+%
 \[ f \circ_{\mathsf{C}^{op}} 1_A = 1_A \circ_{\mathsf{C}} f = f \text{ and }
 1_B \circ_{\mathsf{C}^{op}} f = f \circ_{\mathsf{C}} 1_B = f; \]
-
+%
 hence the identities are ``identities with respect to composition''. Last, for
 objects $A,B,C,D\in\Obj(\mathsf{C})$ where $A\neq C$ and $B\neq D$,
 clearly $\Hom_{\mathsf{C}}(B,A)\cap\Hom_{\mathsf{C}}(D,C)=\emptyset$ is true iff 
@@ -898,6 +897,47 @@ $\C^{\alpha,\beta}$ mentioned in Example 3.10. [\S5.5, 5.12]
 
 Let $\C$ be a category, with $A,B\in\Obj(\C)$. The objects of $\C^{A,B}$ are
 then diagrams:
+%
+\[\begin{tikzcd}[row sep=tiny]
+A \arrow[dr, "f"]  &   \\
+                   & Z \\
+B \arrow[ur, "g"'] & 
+\end{tikzcd}\]
+%
+Namely, tuples $(Z,f,g)$ where $Z\in\Obj(\C),g\in\Hom_\C(A,Z)$, and
+$f\in\Hom_\C(B,Z)$. For objects $O_1=(Z_1,f_1,g_1)$ and $O_2=(Z_2,f_2,g_2)$ in
+$\Obj(C^{A,B})$, the morphisms between them are morphisms
+$\sigma\in\Hom_\C(Z_1,Z_2)$ such that $f_1\sigma=f_2$ and $g_1\sigma=g_2$. This
+forms the following commutative diagram:
+%
+\[\begin{tikzcd}
+A \arrow[dr, "f_1"] \arrow[drr, bend left, "f_2" near end]    &                               \\
+                                                     & Z_1 \arrow[r, "\sigma"] & Z_2 \\
+B \arrow[ur, "g_1"'] \arrow[urr, bend right, "g_2"' near end] &
+\end{tikzcd}\]
+%
+Given a third object $O_3=(Z_3,f_3,g_3)$, with another morphism $\tau:O_2\to
+O_3$ (which is a morphism from $Z_2\to Z_3$), composition in $\C^{A,B}$ is
+defined the same way as composition in $\C$: $\sigma\tau:Z_1\to Z_3$. Since
+$\sigma$ and $\tau$ both commute (i.e.  $f_1\sigma=f_2$, $g_1\sigma=g_2$,
+$f_2\tau=f_3$, and $g_2\tau=g_3$), then $\sigma\tau$ also commutes:
+$f_1\sigma\tau=f_2\tau=f_3$ and $g_1\sigma\tau = g_2\tau = g_3$. This is how we
+can define composition the same in $\C^{A,B}$ as in $\C$. Diagrammatically, this
+is like "taking away" the $(Z_2,f_2,g_2)$ object in the joint commutative
+diagram for $\sigma$ and $\tau$:
+\[
+\begin{tikzcd}
+A \arrow[dr, "f_1"] \arrow[drr, bend left, "f_2" near end] \arrow[drrr, bend left, "f_3" near end] & & \\
+  & Z_1 \arrow[r, "\sigma"] & Z_2 \arrow[r, "\tau"] & Z_3 \\
+B \arrow[ur, "g_1"'] \arrow[urr, bend right, "g_2"' near end] \arrow[urrr, bend right, "g_3"' near end] & &
+\end{tikzcd}
+\hspace{1in}
+\begin{tikzcd}
+A \arrow[dr, "f_1"] \arrow[drr, bend left, "f_3" near end]    &                               \\
+                                                     & Z_1 \arrow[r, "\sigma\tau"] & Z_3 \\
+B \arrow[ur, "g_1"'] \arrow[urr, bend right, "g_3"' near end] &
+\end{tikzcd}
+\]
 \end{solution}
 
 \end{document}
