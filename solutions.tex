@@ -300,17 +300,18 @@ $\rhd$ Prove statement (2) in Proposition 2.1. You may assume that given a
 family of disjoint subsets of a set, there is a way to choose one element in
 each member of the family. [\S2.5, V3.3]
 
-\begin{quote} \textbf{Proposition 2.1.} Assume $A\neq\empty$, and let $f:A\to B$ be a function. Then
+\begin{quote} \textbf{Proposition 2.1.} Assume $A\neq\emptyset$, and let $f:A\to
+B$ be a function. Then
 (1) $f$ has a left-inverse if and only if $f$ is injective; and \\
 (2) $f$ has a right-inverse if and only if $f$ is surjective.
 \end{quote}
 \end{problem}
 
 \begin{solution}
-Let $A\neq\empty$ and suppose $f:A\to B$ is a function.
+Let $A\neq\emptyset$ and suppose $f:A\to B$ is a function.
 
 ($\implies$) Suppose there exists a function $g$ that is a right-inverse of $f$.
-Then $f\circ g = \id_A$. Let $b\in B$. We have that $f(g(b)) = b$, so there
+Then $f\circ g = \id_B$. Let $b\in B$. We have that $f(g(b)) = b$, so there
 exists an $a = g(b)$ such that $f(a) = b$. Hence $f$ is surjective.
 
 ($\impliedby$) Suppose that $f$ is surjective. We want to construct a function
