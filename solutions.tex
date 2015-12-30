@@ -941,4 +941,20 @@ B \arrow[ur, "g_1"'] \arrow[urr, bend right, "g_3"' near end] &
 \]
 \end{solution}
 
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \Call {\C^{\alpha,\beta}}
+\def \Cobj {\C^{A,B}}
+
+Let $\C$ be a category. Fix two morphisms $\alpha\in\Hom_\C(C,A)$ and
+$\beta\in\Hom_\C(C,B)$ with the same source $C$, where $A,B,C\in\Obj(\C)$. We
+wish to formalize the \textit{fibered} version of $\C^{A,B}$: $\Call$. The
+objects in $\Call$ are triples $(Z,f,g)$ where $Z\in\Obj(\C)$,
+$f\in\Hom_\C(A,Z)$, and $g\in\Hom_\C(B,Z)$ such that $f\alpha = g\beta$.
+Morphisms in $\Call$ between objects $(Z_1,f_1,g_2)$ and $(Z_2,f_2,g_2)$ are
+morphisms $\sigma\in\Hom_\C(Z_1,Z_2)$ such that everything commutes: $f_1\alpha
+= f_2\sigma\alpha$ and $g_1\beta = g_2\sigma\beta$.
+
+\end{solution}
+
 \end{document}
