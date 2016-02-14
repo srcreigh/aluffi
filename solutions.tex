@@ -14,6 +14,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+% Add lcm operator.
+\DeclareMathOperator{\lcm}{lcm}
+
 % The tiks-cd package provides macros for easily writing commutative diagrams.
 % For more info see [1].
 % [1]: http://ctan.math.ca/tex-archive/graphics/pgf/contrib/tikz-cd/tikz-cd-doc.pdf
@@ -86,7 +89,6 @@
 
 % Renewing the \qedsymbol command changes the QED symbol. This QED symbol is
 % automatically used by the proof environment.
-\renewcommand\qedsymbol{\hfill\ensuremath{\blacksquare}}
 
 % Set with spacing padding for the curly braces.
 \newcommand{\set}[1]{\left\{\,#1\,\right\}}
@@ -95,6 +97,9 @@
 \newcommand{\Obj}{\mathrm{Obj}}
 \newcommand{\Hom}{\mathrm{Hom}}
 \newcommand{\abs}[1]{\left|#1\right|}
+% Inuitive "from" command draws an arrow pointing left, A <- B reads "A from p"
+\newcommand{\from}{\leftarrow}
+\newcommand{\quotuniv}[1]{\overline{#1}}
 
 \begin{document}
 
@@ -497,7 +502,7 @@ not in $\im f$ as it is defined above.
 \begin{problem}
 $\rhd$ Show that if $A'\cong A''$ and $B'\cong B''$, and further
 $A'\cap B'=\emptyset$ and $A''\cap B''=\emptyset$, then $A'\cup B'\cong A''\cup
-B''$. Conclude that the operation $A\sqcup B$ is well-defined up to
+B''$. Conclude that the operation $A\amalg B$ is well-defined up to
 \textit{isomorphism} (cf. \S2.9) [\S2.9, 5.7]
 \end{problem}
 
@@ -522,7 +527,7 @@ $A'\cup B'\cong A''\cup B''$.
 Since these constructions of $A',A'',B',B''$ correspond to creating ``copies''
 of sets $A$ and $B$ for use in the disjoint union operation, we have that
 disjoint union is a well-defined function \textit{up to isomorphism}. In
-particular, since $\cong$ is an equivalence relation, we can consider $\sqcup$
+particular, since $\cong$ is an equivalence relation, we can consider $\amalg$
 to be well-defined from $\mathscr{P}_{\cong}$ to $A'\cup B'$.
 \end{solution}
 
@@ -947,14 +952,533 @@ B \arrow[ur, "g_1"'] \arrow[urr, bend right, "g_3"' near end] &
 \def \Cobj {\C^{A,B}}
 
 Let $\C$ be a category. Fix two morphisms $\alpha\in\Hom_\C(C,A)$ and
-$\beta\in\Hom_\C(C,B)$ with the same source $C$, where $A,B,C\in\Obj(\C)$. We
-wish to formalize the \textit{fibered} version of $\C^{A,B}$: $\Call$. The
-objects in $\Call$ are triples $(Z,f,g)$ where $Z\in\Obj(\C)$,
-$f\in\Hom_\C(A,Z)$, and $g\in\Hom_\C(B,Z)$ such that $f\alpha = g\beta$.
-Morphisms in $\Call$ between objects $(Z_1,f_1,g_2)$ and $(Z_2,f_2,g_2)$ are
-morphisms $\sigma\in\Hom_\C(Z_1,Z_2)$ such that everything commutes: $f_1\alpha
-= f_2\sigma\alpha$ and $g_1\beta = g_2\sigma\beta$.
+$\beta\in\Hom_\C(C,B)$ with the same source $C$, and where $A,B,C\in\Obj(\C)$.
+We wish to formalize the \textit{fibered} version of $\C^{A,B}$: $\Call$, where
+instead of specifying specific objects in $\C$ we use morphisms $\alpha$ and
+$\beta$ directly.
+
+The objects in $\Call$ are triples $(Z,f,g)$ where $Z\in\Obj(\C)$,
+$f\in\Hom_\C(A,Z)$, and $g\in\Hom_\C(B,Z)$ such that $f\alpha = g\beta$;
+intuitively, starting with object $\C$ we can use $\alpha$ and $\beta$ to map to
+objects $A$ and $B$, respectively, and the objects in $\Call$ specify a fourth
+object $Z$ and morphisms $f:Z\from A$ and $g:Z\from B$ that both map to $Z$.
+
+Morphisms in $\Call$ between objects $(Z_1,f_1,g_1)$ and $(Z_2,f_2,g_2)$ are
+morphisms $\sigma\in\Hom_\C(Z_1,Z_2)$ such that everything commutes: $\sigma f_1
+\alpha = f_2 \alpha$ and $\sigma g_1 \beta = g_2 \beta$. In short, we diverge to
+$A$ and $B$ from $C$, then simultaneously converge to $Z_1$ and $Z_2$ in such a
+way that we can continue to $Z_2$ from $Z_1$ mapping with $\sigma$.
 
 \end{solution}
 
+
+
+\subsection{Morphisms}
+
+
+% Problem 4.1
+\begin{problem}
+
+$\rhd$ Composition is defined for \textit{two} morphisms. If more than two
+morphisms are given, e.g.,
+%
+\[ A \xrightarrow{f} B \xrightarrow{g} C \xrightarrow{h} D \xrightarrow{i} E \]
+%
+then one may compose them in several ways, for example,
+%
+\[ (ih)(gf),\,\,\,\,(i(hg))f,\,\,\,\,i((hg)f),\,\,\,\,\text{etc.}\]
+%
+so that at every step one is only composing two morphisms. Prove that the result
+of any such nested composition is independent of the placement of the
+parentheses.
+\end{problem}
+
+\begin{solution}
+\def \C {\mathsf{C}}
+For three morphisms $f,g,h$ in a category $\C$:
+%
+\[ A \xrightarrow{f} B \xrightarrow{g} C \xrightarrow{h} D \]
+%
+we have that $(hg)f = h(gf)$ due to $\C$ being a category. Now, fix $n\geq 4$
+and suppose that all parenthesizations of $n-1$ morphisms are equivalent.
+Imagine that $f_1, \dots, f_n$ are morphisms in a category $\C$:
+%
+\[ Z_1 \xrightarrow{f_1} Z_2 \xrightarrow{f_2} \cdots Z_n \xrightarrow{f_n}
+Z_{n+1} \]
+%
+Suppose that some parenthesization of $f_n, f_{n-1}, \dots, f_1$ is $f$ and
+furthermore that $f=hg$, where $h$ is some parenthesization of $f_n, \dots,
+f_{i+1}$, and $g$ is some parenthesization of $f_i, \dots, f_1$, where $1\leq
+i\leq n$. Since $h$ and $g$ are parenthesizations of $n-i$ and $i$ morphisms,
+respectively, they can be written in the following forms:
+%
+\[ h = ((\cdots((f_nf_{n-1})f_{n-2})\cdots)f_{i+1}) \]
+\[ g = (f_i(f_{i-1}(\cdots(f_2f1)\cdots))) = f_ig' \]
+%
+in hence $f=hg=h(f_ig')=(hf_i)g'$. Inductively, we can ``pop'' morphisms off the
+left hand side of $g'$ and add them to the right hand side of $h$, resulting in
+the canonical form:
+%
+\[ f = ((\cdots((f_nf_{n-1})f_{n-2})\cdots)f_1) \]
+\end{solution}
+
+
+% Problem 4.2
+\begin{problem}
+$\rhd$ In Example 3.3 we have seen how to construct a category from a set
+endowed with a relation, provided this latter is reflexive and transitive. For
+what types of relations is the corresponding category a groupoid (c.f. Example
+4.6)? [\S 4.1]
+\end{problem}
+
+\begin{solution}
+\def \C {\mathsf{C}}
+Recall that, in order to construct a category from a set $S$ endowed with a
+reflexive and transitive relation $\sim$, we take $\Obj(\C) = S$ and set
+$\Hom_\C(x,y) = {(x,y)}$ if $x\sim y$, and $\emptyset$ otherwise. This way every
+object $x$ has a unique identity morphism $\Hom_\C(x,x)=(x,x)$ since $\sim$ is
+reflexive.  Composition of morphisms can be defined since $\sim$ is transitive:
+for morphisms $(x,y)$ and $(y,z)$, their composition is $(y,z)(x,y) = (z,x)$.
+
+Now, a groupoid is a category in which every morphism is an isomorphism. We will
+show that we can take a pair $(S,\sim)$ where $S$ is a set and $\sim$ is an
+\textit{equivalence relation} in order to create a groupoid $\C$. Since $\sim$
+is reflexive and transitive, we have seen above how to construct a category
+$\C$. In order to show that every morphism is an isomorphism, let
+$(x,y)\in\Hom_\C(x,y)$. Hence $x\sim y \implies y\sim x$, since $\sim$ is an
+equivalence relation. Now, $(x,y)(y,x) = (y,y)$ and $(y,x),(x,y) = (x,x)$ due to
+the morphism composition rule above; hence $(x,y)$ is an isomorphism, so $\C$ is
+a groupoid.
+\end{solution}
+
+
+% Problem 4.3
+\begin{problem}
+\def \C {\mathsf{C}}
+Let $A$, $B$ be objects of a category $\C$, and let $f \in \Hom_\C(A, B)$ be a
+morphism. 
+\begin{itemize}
+\item Prove that if $f$ has a right-inverse, then $f$ is an epimorphism.
+\item Show that the converse does not hold, by giving an explicit example of a
+category and an epimorphism without a right-inverse.
+\end{itemize}
+\end{problem}
+
+\begin{solution}
+\def \C {\mathsf{C}}
+
+Let $A,B,\C,$ and $f$ be as above.
+\begin{itemize}
+\item Suppose that $f$ has a right-inverse $g:B\to A$ so that $f\circ g: B\to B
+= \id_B$. Let $Z\in\Obj(\C)$ and $\beta',\beta'':A\to Z$, and suppose that
+$\beta'\circ f=\beta''\circ f$. Then we apply $g$ to both sides to get
+$\beta'\circ(f\circ g) = \beta''\circ(f\circ g) \implies \beta'\circ\id_B =
+\beta''\circ \id_B$ since $fg=\id_B$, which in turn implies that
+$\beta'=\beta''$ since $\id_B$ is the identity.
+
+\item Let $\C$ be such that $\Obj(\C) = \mathbf{Z}$, $\Hom_\C(a,b)=\{(a,b)\}$ if
+$a\leq b$ and $\emptyset$ otherwise, and for any objects $a,b,c$ and morphisms
+$f:a\to b$ and $g:b\to c$, define $g\circ f$ = $\{(c,a)\}$. Then every morphism
+$f\in\Hom_\C(a,b)$ is an epimorphism; this is given in the text. However, if
+$f:a\to b = (a,b)$ for $a\neq b$ (hence $a\leq b$,) we have that
+$\Hom_\C(b,a)=\emptyset$; so $f$ in general. This implies that epimorphisms do
+not in general have right inverses.
+\end{itemize}
+\end{solution}
+
+
+% Problem 4.4
+\begin{problem}
+\def \C {\mathsf{C}}
+\def \mono {\mathsf{mono}}
+\def \nonmono {\mathsf{nonmono}}
+
+Prove that the composition of two monomorphisms is a monomorphism. Deduce that
+one can define a subcategory $\C_\mono$ of a category $\C$ by taking the same
+objects as in $\C$ and defining $\Hom_{\C_\mono}(A, B)$ to be the subset of
+$\Hom_\C(A, B)$ consisting of monomorphisms, for all objects $A, B$. (Cf.
+Exercise 3.8; of course, in general $\C_\mono$ is not full in $C$.) Do the same
+for epimorphisms. Can you define a subcategory $\C_\nonmono$ of $\C$ by
+restricting to morphisms that are not monomorphisms?
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \mono {\mathsf{mono}}
+\def \nonmono {\mathsf{nonmono}}
+\def \epi {\mathsf{epi}}
+\def \nonepi {\mathsf{nonepi}}
+
+Let $\C$ be a category with $A,B,C\in \Obj(\C)$, and let $f:A\to B$ and $g:B\to
+C$ be monomorphisms. Let $Z\in\Obj(\C)$ and $\alpha',\alpha'':Z\to A$. Suppose
+$gf\alpha'=gf\alpha''$. Since $g$ is a mono, $f\alpha'=f\alpha''$. Since $f$ is
+a mono, $\alpha'=\alpha''$. Therefore $(gf)\alpha'=(gf)\alpha'' \implies
+\alpha'=\alpha''$, so $gf$ is a mono.
+
+This means that we can take the category $\C_\mono$ as detailed in the question.
+Since identities are isomorphisms, they are also monomorphisms, so we still have
+identities. We just proved that the composition of monomorphisms is a
+monomorphism, so the composition of any two appropriate monomorphisms in
+$\C_\mono$ between, say $A$ and $B$, and $B$ and $C$, respectively, will also be
+a monomorphism hence in $\Hom_{\C_\mono}(A,C)$, so composition ``works'' in
+$\C_\mono$.
+
+The $\C_\nonmono$ as described above is not a category since it doesn't have any
+identities (since all identities are monomorphisms.)
+
+Now, fix $f:A\to B$ and $g:B\to C$ to be epimorphisms. Let $Z\in\Obj(\C)$ and
+$\beta',\beta'':C\to Z$. Suppose $\beta'gf=\beta''gf$. Since $f$ is an epi,
+$\beta'g=\beta''g$. Since $g$ is an epi, $\beta'=\beta''$. Hence $gf$ is an epi
+as above.
+
+By the same reasoning as above we deduce that $\C_\epi$ is a category and
+$\C_\nonepi$ is not a category.
+\end{solution}
+
+
+% Problem 4.5
+\begin{problem}
+\def \MSet {\mathsf{MSet}}
+Give a concrete description of monomorphisms and epimorphisms in the category
+$\MSet$ you constructed in Exercise 3.9. (Your answer will depend on the notion
+of morphism you defined in that exercise!)
+\end{problem}
+\begin{solution}
+\def \MSet {\mathsf{MSet}}
+\def \Set {\mathsf{Set}}
+Recall that, for two multisets $\hat{S}=(S,\sim),\hat{T}=(T,\approx)$ (where
+$S,T$ are sets and $\sim,\approx$ are equivalence relations on $S$ and $T$,
+respectively,) we defined a morphism $f:\hat{S}\to\hat{T}$ in $\MSet$ to be a
+normal set-function except with the extra condition that for any $s,s'\in S$, we
+require that $f$ preserves equivalence, so if $s\sim s'$ then $f(s)\approx
+f(s')$.
+
+The notions of monomorphism and epimorphism transfer over as follows.
+
+\begin{enumerate}
+\item A multiset-function $f:\hat{S}\to\hat{T}$ is a monomorphism iff for all
+$s_1,s_2\in S$, if $f(s_1)\approx f(s_2)$ then $s_1\sim s_2$.
+\item A multiset-function $f:\hat{S}\to\hat{T}$ is an epimorphism iff for all
+$t\in T$, there is an $s\in S$ such that $f(s)\approx t$.
+\end{enumerate}
+
+(Since $\sim$ and $\approx$ are equivalence relations and since these
+definitions are analogous to monos and epis in $\Set$, the proof that these
+really are monos and epis is analogous.)
+\end{solution}
+
+
+
+\subsection{Universal Properties}
+
+
+% Problem 5.1
+\begin{problem}
+\def \C {\mathsf{C}}
+\def \Cop {{\mathsf{C}^{op}}}
+Prove that a final object in a category $\C$ is initial in the opposite category
+$\Cop$ (cf. Exercise 3.1).
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \Cop {{\mathsf{C}^{op}}}
+Let $\C$ be a category and suppose that $A\in\Obj(\C)$ is final in $\C$. Then
+$\Hom_\C(Z,A)=\Hom_\Cop(A,Z)$ is a singleton for all $Z\in\Obj(\C)$, so $A$ is
+initial in $\Cop$.
+\end{solution}
+
+
+% Problem 5.2
+\begin{problem}
+\def \Set {\mathsf{Set}}
+$\rhd$ Prove that $\emptyset$ is the unique initial object in $\Set$. [\S 5.1].
+\end{problem}
+\begin{solution}
+\def \Set {\mathsf{Set}}
+Suppose there is another set $I$ which is initial in $\Set$. Then
+$\emptyset\simeq I$, so $\abs{\emptyset} = 0 = \abs{I}$. But then vacuously we
+get that $\emptyset = I$ (since all the elements in $\emptyset$ are in $I$ and
+vice versa,) so $\emptyset$ is the unique initial object in $\Set$.
+\end{solution}
+
+
+% Problem 5.3
+\begin{problem}
+$\rhd$ Prove that final objects are unique up to isomorphism. [\S 5.1]
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+Let $\C$ be a category and $F_1,F_2$ be two final objects in $\C$. Then there
+are unique morphisms $f:F_1\to F_2$ and $g:F_2\to F_1$. Since there are only one
+of each identities $1_{F_1}$ and $1_{F_2}$, then necessarily $gf = 1_{F_2}$ and
+$fg = 1_{F_1}$, hence $f$ is an isomorphism.
+\end{solution}
+
+
+% Problem 5.4
+\begin{problem}
+What are initial and final objects in the category of `pointed sets' (Example
+3.8)? Are they unique?
+\end{problem}
+\begin{solution}
+\def \Set {\mathsf{Set}}
+\def \SetS {\mathsf{{Set^*}}}
+Recall that $\SetS$ is the set of pairs $(S,s)$ where $S$ is a set and $s\in S$.
+We claim that objects $(\{s\},s)$, i.e. pointed singleton sets, are the initial
+and final objects in $\SetS$. Note that there can be no "empty function" between
+pointed sets, since each set has to have a point. Suppose $(T,t)\in\Obj(\SetS)$.
+Then there is only one function $f:S\to T$ such that $f(s)=t$: the function
+$f=\{(s,t)\}$. There is also only one function $f:T\to S$, namely the function
+that maps each element $t$ in $T$ to $s$. Hence singleton pointed sets are
+initial and final.
+
+Furthermore, clearly morphisms between pointed sets $(S,s)$ and $(T,t)$ such
+that $\abs{S},\abs{T}\geq 2$, there are more than one function $f:S\to T$ and
+$g:T\to S$: we could take $f(s)=f(s')=t$, or $f(s)=t,f(s')=t'$.
+
+They are not unique; any singleton pointed set is initial and final.
+\end{solution}
+
+
+% Problem 5.5
+\begin{problem}
+Consider the category corresponding to endowing (as in Example 3.3) the set
+$\mathbf{Z}^+$ of positive integers with the divisibility relation. Thus there
+is exactly one morphism $d\to m$ in this category if and only if $d$ divides $m$
+without remainder; there is no morphism between $d$ and $m$ otherwise. Show that
+this category has products and coproducts. What are their `conventional' names?
+[\S VII.5.1]
+\end{problem}
+\begin{solution}
+\def \Div {\mathsf{Div}}
+Let $\Div$ be the above category. Let $m,n\in\Obj(\Div)$. We claim that
+$\gcd(m,n)$ corresponds to a final object (namely $(\gcd(m,n),m,n)$) in
+$\Div_{m,n}$. Note that for any $z\in\Obj(\Div)$ such that $z\mid m$ and $z\mid
+n$, $z\mid\gcd(m,n)$ (by definition of $\gcd$;) hence
+$\Hom_{\Div_{m,n}}((z,m,n),(\gcd(m,n),m,n))$ is non-empty. Furthermore, since
+there can only be at most 1 morphism between any two objects in $\Div$,
+$(\gcd(m,n),m,n)$ is final. The conventional name for this is the `greatest
+common divisor.'
+
+The coproducts in $\Div$ are the `least common multiple'. For any
+$z\in\mathbf{Z}^+$, if $m\mid z$ and $n\mid z$, then $\lcm(n,m)\mid z$. Hence
+$((\lcm(m,n),m,n),(z,m,n))$ is the unique morphism from $(\lcm(m,n),m,n)$ in
+$\Div^{m,n}$, so $(\lcm(m,n),m,n)$ is initial.
+\end{solution}
+
+
+% Problem 5.5
+\begin{problem}
+What are the final objects in the category considered in \S5.3? [\S5.3]
+\end{problem}
+\begin{solution}
+\end{solution}
+
+
+% Problem 5.6
+\begin{problem}
+Redo Exercise 2.9, this time using Proposition 5.4.
+\end{problem}
+\begin{solution}
+\def \Set {\mathsf{Set}}
+Suppose $A,B,A',B'$ are sets with $A\cap B=\emptyset$, $A'\cap B'=\emptyset$,
+$A\cong A'$, and $B\cong B'$. We will show that there are two isomorphic
+disjoint unions corresponding to $A\cup B$ and $A'\cup B'$.
+
+First, take $i_A:A\to A\cup B, i_A(a) = a$ for all $a\in A$ and analogous for
+$B$. Then if $Z$ is a set with morphisms $f_A:A\to Z$ and $f_B:B\to Z$, we can
+take $\sigma:A\amalg B=A\cup B\to Z, \sigma(x)$ to be $f_A(x)$ if $x\in A$ and
+$f_B(x)$ otherwise. This is analogous to the proof for disjoint union being a
+coproduct, hence $A\amalg B=A\cup B$ is a disjoint union.
+
+Second, since $A\cong A'$ and $B\cong B'$, let $f:A\to A'$ and $g:B\to B'$ be
+isomorphisms. We can take $i_{A'}: A\to A'\cup B',i_{A'}(a) = f(a)$ for all
+$a\in A$ and similar for $i_{B'}$. Then if $Z$ is a set with morphisms $f_A:A\to
+Z$ and $f_B:B\to Z$, we can take $\sigma:A'\amalg B'=A'\cup B'\to Z, \sigma(x)$
+to be $f_A\circ f^{-1}$ if $x\in A'$ and $f_B\circ g^{-1}$ otherwise (which
+works since $A'\cap B'=\emptyset$.) Hence $A'\amalg B'=A'\cup B'$ is a disjoint
+union.
+
+By Proposition 5.4, since both $A\amalg B$ and $A'\amalg B'$ are initial objects
+in some auxiliary category of $\Set$, they are isomorphic, as required.
+\end{solution}
+
+
+% Problem 5.7
+\begin{problem}
+\def \C {\mathsf{C}}
+Show that in every category $\C$ the products $A\times B$ and $B\times A$ are
+isomorphic, if they exist. (Hint: Observe that they both satisfy the universal
+property for the product of $A$ and $B$; then use Proposition 5.4.)
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+Let $\C$ be a category with products $A\times B$ and $B\times A$. First,
+consider how $f:A\times B\to B\times A, f(a,b) = (b,a)$ is an isomorphism
+between $A\times B$ and $B\times A$ (with inverse $f^{-1}(b,a) = (a,b)$.) Since
+$B\times A$ is a product in $\C$, for each object $Z\in\Obj(\C)$ with morphisms
+$f_B:B\to Z$ and $f_A:A\to Z$, there is a unique morphism $\tau:Z\to B\times A$
+such that everything commutes. However, using $f$ we can construct a unique
+morphism $\sigma:Z\to A\times B$ in terms of $\tau$ by taking $\sigma =
+f^{-1}\circ\tau$. Hence $B\times A$ is a product for $A\times B$ as well, i.e.
+$B\times A$ is a final object in some auxiliary category.
+
+Hence, by Proposition 5.4, $A\times B$ and $B\times A$ are isomorphic.
+\end{solution}
+
+
+% Problem 5.8
+\begin{problem}
+\def \C {\mathsf{C}}
+Let $\C$ be a category with products. Find a reasonable candidate for the
+universal property that the product $A\times B\times C$ of three objects of $\C$
+ought to satisfy, and prove that both $(A\times B)\times C$ and $A\times
+(B\times C)$ satisfy this universal property. Deduce that $(A\times B)\times C$
+and $A\times (B\times C)$ are necessarily isomorphic.
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \tp {A\times B\times C}
+Let $\C$ be a category with products, and let $A,B,C\in\Obj(\C)$. The
+three-product is an object $\tp\in\Obj(\C)$ with morphisms $\pi_A:\tp\to A$,
+$\pi_B:\tp\to B$, and $\pi_C:\tp\to C$ such that for all $Z\in\Obj(\C)$ with
+morphisms $f_A:Z\to A,f_B:Z\to B,f_C:Z\to C$, there is a unique morphism
+$\sigma:Z\to\tp$ such that the following diagram commutes:
+\[\begin{tikzcd}
+&&A \\
+Z\arrow[r,"\sigma"]\arrow[urr,bend left,"f_A"]\arrow[drr,bend right,"f_B"]\arrow[ddrrr,bend right,"f_C"]&
+      \tp\arrow[ur,"\pi_A"]\arrow[dr,"\pi_B"]\arrow[ddrr,bend left,"\pi_C"] \\
+&&B \\
+&&&C
+\end{tikzcd}\]
+
+First, we will show that $(A\times B)\times C$ is a three-product. Since
+$A\times B$ and $Z\times C$ are products, there are a unique morphisms
+$\tau:A\times B\to Z$ and $\upsilon:Z\times C\to Z$ for every object $Z$.  We
+can use these two morphisms to build $\sigma:\tp\to Z$ for any object $Z$ as
+follows: $\sigma:(A\times B)\times C\to Z, \sigma(a,b,c)=\upsilon(\tau(a,b),c)$.
+Since $\upsilon$ and $\tau$ are well-defined and unique, $\sigma$ is
+well-defined and unique. Hence $(A\times B)\times C$ is a three-product.
+
+Now, consider $A\times(B\times C)$. Similarly, this corresponds to unique
+morphisms $\tau:A\times Z\to Z$ and $\upsilon:B\times C\to Z$ from which we can
+construct $\sigma:A\times(B\times C)\to Z,\sigma(a,b,c)=\tau(a,\upsilon(b,c))$.
+By the same logic as above, $A\times(B\times C)$ is a three product.
+
+Thus by Proposition 5.4, $(A\times B)\times C$ and $A\times(B\times C)$ are
+isomorphic.
+\end{solution}
+
+
+% Problem 5.10
+\begin{problem}
+\def \Set {\mathsf{Set}}
+Push the envelope a little further still, and define products and coproducts
+for families (i.e., indexed sets) of objects of a category.
+
+Do these exist in $\Set$?
+
+It is common to denote the product $A\times\cdots\times A$ ($n$ times) by $A^n$.
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+\def \Set {\mathsf{Set}}
+Let $\C$ be a category and $I$ be a set. Consider $\{A_i\}_{i\in I}$ with each
+$A_i\in\Obj(\C)$. An \textit{infinitary product} $\prod_{i\in I}
+A_i\in\Obj(\C)$ with morphisms $\{\pi_{A_i}\}_{i\in I}$ must satisfy the
+universal property that, for all $Z\in\Obj(\C)$ and morphisms $\{f_{A_i}\}_{i\in
+I}$, there must be a unique $\sigma:Z\to\prod_{i\in I}A_i$ such that
+$\sigma\pi_{A_i}=f_{A_i}$ for all $i\in I$.
+
+These should exist in $\Set$ as long as we have the axiom of choice.
+\end{solution}
+
+
+% Problem 5.11
+\begin{problem}
+\newcommand{\quot}[2]{#1/\!\!#2\,\,}
+\newcommand{\quotntws}[2]{#1/\!\!#2}
+Let $A$, resp. $B$, be a set, endowed with an equivalence relation $\sim_A$,
+resp. $\sim_B$.
+Define a relation $\sim$ on $A\times B$ by setting
+\[ (a_1, b_1) \sim (a_2, b_2) \iff a_1 \sim_A a_2 \text{ and } b_1 \sim_B b_2. \]
+(This is immediately seen to be an equivalence relation.)
+\begin{itemize}
+\item Use the universal property for quotients (\S5.3) to establish that there are
+functions
+\[ \quot{(A\times B)}{\sim} \to \quotntws{A}{\sim_A},
+   \quot{(A\times B)}{\sim} \to \quotntws{B}{\sim_B}. \]
+\item Prove that $\quotntws{(A\times B)}{\sim}$, with these two functions,
+satisfies the universal property for the product of $\quotntws{A}{\sim_A}$ and
+$\quotntws{B}{\sim_B}$.
+\item Conclude (without further work) that $\quot{(A\times
+B)}{\sim}\cong(\quotntws{A}{\sim_A})\times(\quotntws{B}{\sim_B}).$
+\end{itemize}
+\end{problem}
+\begin{solution}
+\newcommand{\quot}[2]{#1/\!\!#2\,\,}
+\newcommand{\quotntws}[2]{#1/\!\!#2}
+Let $A,B,\sim,\sim_A,\sim_B$ be as above. Let $\pi_A:A\times B\to A$ and
+$\pi_B:A\times B\to B$ be the product canonical projections for $A$ and $B$. Let
+$\pi^Z_\sim:Z\to\quotntws{Z}{\sim}$ be the canonical quotient mapping for all
+objects $Z$ and equivalence relations $\sim$. Then we can apply the universal
+property for quotients twice to get the required two functions:
+\[\begin{tikzcd}[column sep=tiny]
+\quotntws{(A\times B)}{\sim} \arrow[rr,"\quotuniv{\pi^A_{\sim_A}\circ\pi_A}"] && \quotntws{A}{\sim_A} \\
+&A\times B \arrow[ul,"\pi^{A\times B}_\sim"] \arrow[ur,swap, "\pi^A_{\sim_A}\circ\pi_A"]&
+\end{tikzcd}\]
+
+\[\begin{tikzcd}[column sep=tiny]
+\quotntws{(A\times B)}{\sim} \arrow[rr,"\quotuniv{\pi^B_{\sim_B}\circ\pi_B}"] && \quotntws{A}{\sim_A} \\
+&A\times B \arrow[ul,"\pi^{A\times B}_\sim"] \arrow[ur,swap, "\pi^B_{\sim_B}\circ\pi_B"]&
+\end{tikzcd}\]
+
+\def \quotA {\quotntws{A}{\sim_A}}
+\def \quotB {\quotntws{B}{\sim_B}}
+
+Now, we wish to show that $\quotntws{(A\times B)}{\sim}$ satisfies the universal
+property for the product of $\quotA$ and $\quotB$. Rename the two functions
+proved above to be $*^A$ and $*^B$. Let $Z$ be a set with morphisms
+$f_A:Z\to\quotA$ and $f_B:Z\to\quotB$. We wish to construct a function $\sigma$
+so that the following diagram commutes:
+%
+\[\begin{tikzcd}
+&& \quotntws{A}{\sim_A} \\
+Z\arrow[r,"\sigma"]\arrow[urr,bend left,"f_A"]\arrow[drr,bend right,swap,"f_B"]
+   &\quotntws{(A\times B)}{\sim}\arrow[ur,"*^A"]\arrow[dr,swap,"*^B"] \\
+&& \quotntws{B}{\sim_B}
+\end{tikzcd}\]
+%
+\def \quotAB {\quotA\times\quotB}
+First, define $f:Z\to\quotAB$ to be $f(z)=(f_A(z),f_B(z))$. Next, we observe
+that we can use the quotient universal property with $\quotA$ to get a map
+$\quotuniv{1_A}:\quotA\,\,\to A$ and likewise for $\quotuniv{1_B}:\quotB\,\,\to
+B$. Define $\quotuniv{1_{A\times B}}:\quotAB\,\,\to A\times B$ to be
+$\quotuniv{1_{A\times B}}([a]_{\sim_A},[b]_{\sim_B}) =
+(\quotuniv{1_A}([a]_{\sim_A}), \quotuniv{1_B}([b]_{\sim_B}))$. Finally, we can
+take $\sigma=\pi^{A\times B}_\sim \circ \quotuniv{1_{A\times B}} \circ
+f:Z\to\quotntws{(A\times B)}{\sim}$ to satisfy the universal property for
+product of $\quotA$ and $\quotB$ (it is uniquely determined by its respective
+pieces.)
+
+Therefore, by Proposition 5.4, $\quot{(A\times B)}{\sim}\cong\quotA \times
+\quotB$.
+\end{solution}
+
+
+% Problem 5.12
+\begin{problem}
+\def \C {\mathsf{C}}
+\def \Set {\mathsf{Set}}
+Define the notions of fibered products and fibered coproducts, as terminal
+objects of the categories $\C^{\alpha,\beta}, \C_{\alpha,\beta}$ considered in
+Example 3.10 (cf. also Exercise 3.11), by stating carefully the corresponding
+universal properties.
+
+As it happens, $\Set$ has both fibered products and coproducts. Define these
+objects `concretely', in terms of naive yet theory. [II.2.9, III.6.10, III.6.11]
+\end{problem}
+\begin{solution}
+I'm not really sure how to phrase this yet. I think I'll come back to it later
+when we've dealt with fibered categories a little more.
+\end{solution}
 \end{document}
