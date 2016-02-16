@@ -1,0 +1,277 @@
+
+% Solutions to exercises in Paolo Aluffi's "Algebra: Chapter 0"
+% All solutions copyright 2015 Shane Creighton-Young
+
+% The scrartcl document class lets us have a wider stroke width for the fonts. However, it
+% changes the heading font by default so we've used the \setkomafont command to
+% restore the headings to the vanilla LaTeX style.
+\documentclass[fontsize=14pt]{scrartcl}
+\setkomafont{disposition}{\normalfont\bfseries}
+
+% Standard American Math Society packages provide theorem environments, symbols,
+% etc.
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Add lcm operator.
+\DeclareMathOperator{\lcm}{lcm}
+
+% The tiks-cd package provides macros for easily writing commutative diagrams.
+% For more info see [1].
+% [1]: http://ctan.math.ca/tex-archive/graphics/pgf/contrib/tikz-cd/tikz-cd-doc.pdf
+\usepackage{tikz-cd}
+
+% The pdfrender package is used to output fonts with a larger stroke width.
+\usepackage{pdfrender}
+
+% The mathrsfs package provides the script font.
+\usepackage{mathrsfs}
+
+\usepackage[margin=0.6in]{geometry}
+
+% The chngcntr ("change counter") package is used here so that subsection
+% numbers are written without the leading section number. This takes place in
+% the subsection headings as well as the theorem environment numbering.
+%
+% Before:
+% 1. Section
+% 1.1. Subsection
+% Problem 1.1.1. What is 1 + 1?
+% Problem 1.1.2. What is 1 + 2?
+%
+% After:
+% 1. Section
+% 1. Subsection
+% Problem 1.1. What is 1 + 1?
+% Problem 1.2. What is 1 + 2?
+\usepackage{chngcntr}
+\counterwithout{subsection}{section}
+
+% The problem environment is a regular ams theorem environment with "Problem"
+% text and some leading space to give some separation between the problems.
+\theoremstyle{definition}
+\newtheorem{problem-internal}{Problem}[subsection]
+\newenvironment{problem}{
+  \medskip
+  \begin{problem-internal}
+}{
+  \end{problem-internal}
+}
+
+% The solution environment is a proof environment with the "solution" text as
+% well as the following adjustments:
+% - No indent on paragraphs;
+% - A small amount of space between paragraphs.
+%
+% Note: The negative space at the beginning is to remove the space before the
+% first paragraph in the solution.
+\newenvironment{solution}{
+  \begin{proof}[Solution]
+  \vspace{-8px}
+  \setlength{\parskip}{4px}
+  \setlength{\parindent}{0px}
+}{
+  \end{proof}
+}
+
+% Renewing the \thesection command changes the section numbers to roman
+% numerals. This matches the style of the Aluffi textbook.
+%
+% Before:
+% 1. Section
+% 1.1. Subsection
+%
+% After:
+% I. Section
+% I.1. Subsection
+\renewcommand{\thesection}{\Roman{section}} 
+
+% Renewing the \qedsymbol command changes the QED symbol. This QED symbol is
+% automatically used by the proof environment.
+
+% Set with spacing padding for the curly braces.
+\newcommand{\set}[1]{\left\{\,#1\,\right\}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\im}{\mathrm{im}}
+\newcommand{\Obj}{\mathrm{Obj}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\abs}[1]{\left|#1\right|}
+% Inuitive "from" command draws an arrow pointing left, A <- B reads "A from p"
+\newcommand{\from}{\leftarrow}
+\newcommand{\quotuniv}[1]{\overline{#1}}
+% inverses should have a -1
+\newcommand{\inv}[1]{#1^{-1}}
+
+\begin{document}
+
+
+
+\section*{Chapter 2}
+\subsection*{Groups: First encounter}
+\setcounter{subsection}{1}
+
+
+% Problem 1.1
+\begin{problem}
+Write a careful proof that every group is the group of isomorphisms of a
+groupoid. In particular, every group is the group of automorphisms of some
+object in some category. (\S2.1]
+\end{problem}
+\begin{solution}
+\def \C {\mathsf{C}}
+Let $G$ be a group with binary operation $\circ$ and identity $e$. Consider a
+category $\C$ with a single object $\emptyset$. We will show that the elements
+of $G$ make suitable morphisms $\Hom_\C(\emptyset,\emptyset)$ with $\circ$ as a
+composition operation.
+
+Since $G$ is a group, $G$ (i.e. $\Hom_\C(\emptyset,
+\emptyset)$) is closed $\circ$ and $\circ$ is transitive for morphisms. The
+identity $e$ makes an appropriate identity morphism for $\emptyset$. Hence $\C$
+is a category.
+
+Lastly, we will show that $\C$ is a groupoid. Any morphism
+$f\in\Hom_\C(\emptyset, \emptyset)$ has a (two-sided) inverse $f^{-1}$ since $G$
+is a group. This means that $f$ is an isomorphism.
+\end{solution}
+
+
+% Problem 1.2
+\begin{problem}
+Consider the `sets of numbers' listed in \S1.1, and decide which are made into
+groups by conventional operations such as $+$ and $\cdot$. Even if the answer is
+negative (for example, $(\mathbb{R},\cdot)$ is not a group), see if variations
+on the definition of these sets lead to groups (for example,
+$(\mathbb{R}^*,\cdot)$ is a group; cf. \S1.4). [\S1.2]
+\end{problem}
+\begin{solution}
+This is open-ended, so I don't want to do it.
+\end{solution}
+
+\begin{problem}
+Prove that $\inv{(gh)} = \inv{h}\inv{g}$ for all elements $g,h$ of a group $G$.
+\end{problem}
+\begin{solution}
+Let $B$ be a group and suppose $f,g\in G$. Then we have:
+%
+\[ (\inv{g}\inv{f})(fg) = (\inv{g}(\inv{f}f))g = (\inv{g}e)g = \inv{g}g = e \]
+\[ (fg)(\inv{g}\inv{f}) = (f(g\inv{g}))\inv{f} = (fe)\inv{f} = f\inv{f} = e \]
+%
+Hence $\inv{g}\inv{f}$ is a two-sided inverse of $gf$.
+\end{solution}
+
+
+% Problem 1.3
+\begin{problem}
+Suppose that $g^2 = e$ for all elements $g$ of a group $G$; prove that $G$ is
+commutative.
+\end{problem}
+\begin{solution}
+Let $G$ be a group with $g,h\in G$ such that $g^2=h^2=e$. Then,
+%
+\[ gh = eghe = hhghgg = h(hg)^2g = hg \]
+%
+as required.
+\end{solution}
+
+
+% Problem 1.4
+\begin{problem}
+The `multiplication table' of a group is an array compiling the results of all
+multiplications $g\bullet h$:
+
+[Redacted.]
+
+(Here $e$ is the identity element. Of course the table depends on the order in
+which the elements are listed in the top row and leftmost column.) Prove that
+every row and every column of the multiplication table of a group contains all
+elements of the group exactly once (like Sudoku diagrams!).
+\end{problem}
+\begin{solution}
+Without loss of generality suppose that two elements in a column are different,
+i.e. for some fixed element $f$ we have $f\bullet g = f\bullet h$. Then by
+(left-)cancellation we get that $g=h$. Hence the columns must be the same.
+\end{solution}
+
+
+% Problem 1.5
+\begin{problem}
+$\neg$ Prove that there is only one possible multiplication table for $G$ if $G$
+has exactly 1, 2, or 3 elements. Analyze the possible multiplication tables for
+groups with exactly 4 elements, and show that there are two distinct tables, up
+to reordering the elements of $G$. Use these tables to prove that all groups
+with $< 4$ elements are commutative.
+
+(You are welcome to analyze groups with 5 elements using the same technique, but
+you will soon know enough about groups to be able to avoid such brute-force
+approaches.) [2.19]
+\end{problem}
+\begin{solution}
+(Note: I spent a lot of time trying to figure out why there seemed to be many
+more than 2 tables for groups with exactly 4 elements until going back to the
+question where it there are only 2 ``up to reordering''!)
+
+If a group only has one element, say $G=\set{e}$, there is only one spot to fill.
+Since multiplication must be closed it must be $e$. Here $e$ is the identity.
+
+If a group has two elements, say $G=\set{e,g}$, then there are four spots to
+fill. The $e$-row and $e$-column are easy, so there is only one non-trivial
+column to fill. If $gg=g$ then by cancellation we get that $g=e$, which is a
+contradiction since $g$ is distinct from $e$. So $gg=e$.
+
+Suppose that $G=\set{e,g,h}$. Here there are four non-trivial spots to fill.  We
+can't have that $gh=h$ (by cancellation as above), so we must have $gh=e$. For
+the same reason, we must have $hg=e$. There is no other choice but to set
+$g^2=h$ and $h^2=g$.
+
+Suppose that $G=\set{e,f,g,h}$. This is the tricky one. There are nine spots to
+fill. First of all, we note that due to the double-sidedness of inverses, we
+have that for $f,g,h\in G$ (all distinct) we can't have that $fg=h$ and $gf=e$
+(the second implies that $f=\inv{g}$, but then the first says $\inv{g}{g}\neq
+e$, a contradiction.) This in fact implies commutativity, since for any distinct
+$f,g\in G$ it must either be the case that $fg=e=gf$ or $fg=h=gf$.
+
+The question states that there are only two ``up to the order of the elements''.
+So, rather than answer ``how many possible tables are there'', we will answer:
+how many $n$ are such that $n$ elements of $G$ go to the identity when squared?
+We'll see that only $n=1$ and $n=3$ work; and that the only differences in the
+tables for $n=1$ are the choosing of which element has order 2 (i.e. which
+element goes to the identity when it is squared;) and that there is only one
+table where $n=3$.
+
+Clearly it can't work for $n<0$ or $n>3$ (we can't choose less than 0 or more
+than 3 elements from $G$.) We claim that it can't be that no element in $G$ has
+order 2. To see this, without loss of generality consider $f$. We know that $f$
+must have an inverse that is distinct from itself (or else we get an immediate
+contradiction) and from $e$---without loss of generality, suppose $\inv{f}=h$.
+This also means that $\inv{h}=f$.  Now we ask: which element can be the inverse
+of $g$? It can't be $f$ or $h$ because the inverse is unique and $g$ is distinct
+from $f$ and $h$. It also can't be $e$ since $ge=g$ by definition.  So it must
+be $g$. But this means that there are 1 elements that have order 2.  We have
+shown that, if any element in $G$ doesn't have order 2, another must have order
+2. So zero order two elements is a contradiction.
+
+Now we claim that having only two elements of order not equal to 2 is also
+infeasible. Assume without loss of generality that $f^2=e$ and $g^2=e$. What is
+$h^2$? We note that the inverse of $h$ cannot be $e$ by cancellation, and cannot
+be $f$ or $g$ since inverses are unique and $h$ is distinct from $f$ and $g$.
+This means that $h$ must be its own inverse, and thus has order 2. Therefore,
+two elements of order 2 implies three elements of order 2.
+
+Now we'll show that one order 2 element works okay. Without loss of generality
+assume $f^2=e$. Here we must take $gh=hg=e$. These are three cells in our table.
+Furthermore, we must have $fg=h$ (since $fg$ can't be $f$ or $g$ or $e$), and
+similarly for $fh=g$. By commutativity we also have that $gf=h$ and $hf=g$. Now
+we've filled seven cells in our table. By our above ``theorem'' about column and
+row uniqueness we know we must take $gh=hg=f$. Hence there is only one group of
+size 4 with only one order 2 element (up to the selection of which element has
+order 2.)
+
+Last, consider the group of size 4 where all elements are order 2. Immediately
+we deducate that $fg=h$ (since it can't be $e$, $f$, or $g$ by cancellation,)
+and then that $fh=g$ (since it is the last option!) Similarly that $gh=f$, and
+so on---there is only one group where all elements are order 2.
+\end{solution}
+
+
+\end{document}
