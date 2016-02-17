@@ -131,7 +131,7 @@ identity $e$ makes an appropriate identity morphism for $\emptyset$. Hence $\C$
 is a category.
 
 Lastly, we will show that $\C$ is a groupoid. Any morphism
-$f\in\Hom_\C(\emptyset, \emptyset)$ has a (two-sided) inverse $f^{-1}$ since $G$
+$f\in\Hom_\C(\emptyset, \emptyset)$ has a (two-sided) inverse $\inv{f}$ since $G$
 is a group. This means that $f$ is an isomorphism.
 \end{solution}
 
@@ -167,7 +167,8 @@ Suppose that $g^2 = e$ for all elements $g$ of a group $G$; prove that $G$ is
 commutative.
 \end{problem}
 \begin{solution}
-Let $G$ be a group with $g,h\in G$ such that $g^2=h^2=e$. Then,
+Let $G$ be a group such that for all $g\in G$ we have $g^2=e$. Fix $g,h\in G$.
+Then,
 %
 \[ gh = eghe = hhghgg = h(hg)^2g = hg \]
 %
@@ -273,5 +274,148 @@ and then that $fh=g$ (since it is the last option!) Similarly that $gh=f$, and
 so on---there is only one group where all elements are order 2.
 \end{solution}
 
+
+% Problem 1.7
+\begin{problem}
+Prove Corollary 1.11.
+\end{problem}
+\begin{solution}
+Too easy: $\abs{g}$ is a divisor of $n$ is equivalent to $n$ is a multiple of
+$\abs{g}$.
+\end{solution}
+
+
+% Problem 1.8
+\begin{problem}
+Let $G$ be a finite group, with exactly one element $f$ of order 2. Prove that
+$\prod_{g\in G}g = f$. [4.16]
+\end{problem}
+\begin{solution}
+I struggled a lot with this problem. The question implies that $\prod_{g\in G}$
+is well-defined, which means that $G$ is a commutative group, however I could
+not prove this.
+
+Assuming that it is commutative, then we can take $G=\set{e, f, g_1, \dots, g_m,
+\inv{g_1}, \dots, \inv{g_m}}$ all distinct. Then the product $\prod_{g\in G}$,
+since $G$ is commutative, can be written $efg_1\inv{g_1}\cdots
+g_m\inv{g_m}=efe\cdots e = f$ as required.
+
+(I hope to figure out how to prove that $G$ is commutative eventually.)
+\end{solution}
+
+
+% Problem 1.9
+\begin{problem}
+Let $G$ be a finite group, of order $n$, and let $m$ be the number of elements
+$g\in G$ of order exactly 2. Prove that $n - m$ is odd. Deduce that if $n$ is
+even, then $G$ necessarily contains elements of order 2.
+\end{problem}
+\begin{solution}
+Let $G$, $n$, $m$ as above. Note that every element $g\in G$ that is not $e$ and
+is not order 2 has a unique inverse $\inv{g}$ such that $g\neq \inv{g}$. Hence
+every element except for $e$ and except for all the order 2 elements come in
+pairs; there are, say $2k$ of them. Then $n=1+m+2k$, where the 1 corresponds to
+$e$, $m$ is the number of order-2 elements, and $k$ is the number of pairs
+$g,\inv{g}$. It follows that $n-m=2k+1$, so $n-m$ is odd.
+
+Further, suppose $n$ is even, so $n=2p$ for some $p$ with $p>k$ (for the $2k$
+elements doesn't include the identity element $e$, there must be more than $2k$
+elements in $G$, i.e. $2p>2k$, which implies $p>k$.) Then $n=2p=1+m+2k$.
+Rearranging we get that $m=2(p-k)-1$. Since $p>k$, $p-k\geq 1$, so $2(p-k)\geq
+2$, and $2(p-k)-1\geq 1$, hence $m\geq 1$ so $G$ necessarily contains at least
+one element of order 2.
+\end{solution}
+
+
+% Problem 1.10
+\begin{problem}
+Suppose the order of $g$ is odd. What can you say about the order of $g^2$?
+\end{problem}
+\begin{solution}
+Suppose $\abs{g}=2k+1$ for some $k$. Then, by Proposition 1.13,
+%
+\[ \abs{g^2} = \frac{\lcm(2,2k+1)}{2} = \frac{4k+2}{2} = 2k+1 \]
+%
+(where we take $\lcm(2,2k+1)=2(2k+1)$ since $2k+1$, being odd, is relatively
+prime with $2$.) Hence $\abs{g^2}=\abs{g}$.
+\end{solution}
+
+
+% Problem 1.11
+\begin{problem}
+Prove that for all $g$, $h$ in a group $G$, $\abs{gh} = \abs{hg}$. (Hint: Prove
+that $\abs{\inv{a}ga} = \abs{g}$ for all $a$, $g$ in $G$.)
+\end{problem}
+\begin{solution}
+Let $g,a\in G$. Suppose $\abs{g}=n$. Then,
+%
+\[ (\inv{a}ga)^n = (\inv{a}ga)(\inv{a}ga)\cdots(\inv{a}ga) =
+\inv{a}g(a\inv{a})g\cdots g(a\inv{a})ga = \inv{a}g^na \]
+%
+We also have that $g^n = e \iff g^n = a\inv{a} \iff \inv{a}g^na=e$. This means
+that $\abs{\inv{a}ga}= n = \abs{g}$, which implies that $\abs{ag} =
+\abs{a\inv{a}ga} = \abs{ga}$, as required.
+\end{solution}
+
+
+% Problem 1.12
+\begin{problem}
+I don't want to typeset the matrices!
+\end{problem}
+
+
+% Problem 1.13
+\begin{problem}
+$\rhd$ Give an example showing that $\abs{gh}$ is not necessarily equal to
+$\lcm(\abs{g}, \abs{h})$, even if $g$ and $h$ commute. [§1.6, 1.14]
+\end{problem}
+\begin{solution}
+Consider the 4-group with 1 element of order two as above. Then we have
+$G=\set{e,f,g,h}$ with $f^2=e$, $gh=hg=e$, and $g^2=h^2=f$. Here we have that
+$\abs{gh}=\abs{e}=0$, while $\lcm(\abs{g},\abs{h})=\lcm(4,4)=4$, so
+$\abs{gh}\neq\lcm(\abs{g},\abs{h})$. 
+\end{solution}
+
+
+% Problem 1.14
+\begin{problem}
+$\rhd$ As a counterpoint to Exercise 1.13, prove that if $g$ and $h$ commute and
+$\gcd(\abs{g}, \abs{h}) = 1$, then $\abs{gh}=\abs{g}\abs{h}$. (Hint: Let $N =
+\abs{gh}$; then $g^N = (\inv{h})^N$. What can you say about this element?) [\S
+1.6, 1.15, \S IV.2.5]
+\end{problem}
+\begin{solution}
+Let $g,h\in G$ with $gh=hg$. Set $\abs{g}=n$, $\abs{h}=m$, and
+$\abs{gh}=\abs{hg}=N$. Suppose that $\gcd(n,m)=1$. We have by Proposition 1.14
+that $N\mid\lcm(n,m)$. Since $\gcd(n,m)=1$, $\lcm(n,m)=nm$. So $nm=kN$ (1) for
+some $k$. Also, since $\gcd(n,m)=1$ we get that $N\mid n$ xor $N\mid m$.
+Suppose, without loss of generality, that $N\mid n$, so that $n=\ell N$ for some
+$\ell$ (2). Divide (1) by (2) to get that $m=\frac{k}{\ell}$ (3).
+
+Now, we will prove that $k=1$. Since $(gh)^N=g^N=e$, we get that
+$g^N=(\inv{h})^N$ (4). By (2) we get that $\abs{g^N}=\ell$. Since $h^m=e$, we have
+$hh^{m-1}=e$, so $\inv{h}=h^{m-1}$. By (4) we know that
+$\abs{(h^{m-1})^N}=\abs{h^{N(m-1)}}=\ell$. However, by Proposition 1.13 we know
+that $\ell =\frac{\lcm(m,N(m-1))}{N(m-1)}$. Since $N\mid nm$ and $\gcd(n,m)=1$
+and we're assuming $N\mid n$, $\gcd(N,m)=1$. So
+$\ell=\frac{m(N(m-1))}{N(m-1)}=m$. From this we get $m = \frac{k}{\ell} =
+\frac{k}{m} \implies k=1$. Looking back at (1) where $nm=kN$ we can finally
+deduce that $nm=N$.
+\end{solution}
+
+
+% Problem 1.15
+\begin{problem}
+$\neg$ Let $G$ be a commutative group, and let $g\in G$ be an element of maximal
+finite order, that is, such that if $h\in G$ has finite order, then
+$\abs{h}<\abs{g}$.  Prove that in fact if $h$ has finite order in $G$, then
+$\abs{h}\mid\abs{g}$. (Hint: Argue by contradiction.  If $\abs{h}$ is finite but
+does not divide $\abs{g}$, then there its a prime integer $p$ such that $\abs{g}
+= p^mr$, $\abs{h} = p^ns$, with $r$ and $s$ coprime to $p$ and $m < n$. Use
+Exercise 1.14 to compute the order of $g^{p^m}h^s$.) [\S 2.1, 4.11, IV.6.15]
+\end{problem}
+\begin{solution}
+TODO
+\end{solution}
 
 \end{document}
