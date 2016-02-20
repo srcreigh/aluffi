@@ -1115,4 +1115,49 @@ the first component of the product two elements in a direct product group is
 only in terms of two elements in $G$.
 \end{solution}
 
+
+% Problem 3.6
+\begin{problem}
+$\rhd$ Consider the product of the cyclic groups $C_2$, $C_3$ (cf. \S2.3):
+$C_2\times C_3$. By Exercise 3.3, this group is a coproduct of $C_2$ and $C_3$
+in $\Ab$. Show that it is not a coproduct of $C_2$ and $C_3$ in $\Grp$, as
+follows:
+\begin{itemize}
+\item find injective homomorphisius $C_2\to S_3, C_3\to S_3$;
+\item arguing by contradiction, assume that $C_2\times C_3$ is a coproduct of
+$C_2$, $C_3$, and deduce that there would be a group homomorphism $C_2\times
+C_3\to S_3$ with certain properties;
+\item show that there is no such homomorphism.
+\end{itemize}
+\end{problem}
+\begin{solution}
+Consider $C_2,C_3,S_3$. We can construct injective morphisms $f_{C_2}$ and
+$f_{C_3}$ as follows:
+%
+\[ f_{C_2}([a]_2) = \sigma^a_2 \]
+\[ f_{C_3}([a]_3) = \sigma^a_3 \]
+%
+(using the cyclic permutation construction, $\sigma_d\in S_n$ with $d\leq n$ and
+$\abs{\sigma_d}=d$, from above.) 
+
+Suppose $C_2\times C_3$ is a coproduct in $\Grp$ with morphisms
+$\iota_{C_2}:C_2\to C_2\times C_3$ and $\iota_{C_3}:C_3\to C_2\times C_3$.
+Considering $S_3$ with $f_{C_2}$ and $f_{C_3}$, by the universal property of
+coproducts there is a unique morphism $\varphi:C_2\times C_3\to S_3$ such that
+$\iota_{C_2}\varphi = f_{C_2}$ etc.
+
+Since $f_{C_2}$ and $f_{C_3}$ are injective, all of $\iota_{C_2}$,
+$\iota_{C_3}$, and $\varphi$ must be injective.  (To see this, suppose
+$\iota_{C_2}$ isn't injective; then $\iota_{C_2}([a]_2) = \iota_{C_2}([b]_2$ for
+$a\neq b$, which means that $\varphi\iota_{C_2}([a]_2) =
+\varphi\iota_{C_2}([b]_2)$; however, this cannot be, since the diagram must
+commute with the injective function $f_{C_2}$.)
+
+Now, notice that $S_n$ has three elements of order 2 (the ``reflection''
+elements,) while $C_2$ has one, $([1]_2,[0]_3)$. This means that there must be a
+$g\in C_2\times C_3$ such that $\abs{g}>2$ but $\abs{\varphi(g)}=2$. But this
+means that $\varphi(\inv{g})=\varphi(g)$, even though (since $\abs{g}>2$,)
+$g\neq\inv{g}$. Hence $C_2\times C_3$ is not a coproduct in $\Grp$.
+\end{solution}
+
 \end{document}
