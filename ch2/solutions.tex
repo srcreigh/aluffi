@@ -1131,33 +1131,39 @@ C_3\to S_3$ with certain properties;
 \end{itemize}
 \end{problem}
 \begin{solution}
-Consider $C_2,C_3,S_3$. We can construct injective morphisms $f_{C_2}$ and
-$f_{C_3}$ as follows:
+Consider $C_2,C_3,S_3$. Let $x$, $y$ be the generators for $S_3$ such that
+$x^2=e$ and $y^3=e$ and $yx=xy^2$. We can construct injective morphisms
+$f_{C_2}$ and $f_{C_3}$ as follows:
 %
-\[ f_{C_2}([a]_2) = \sigma^a_2 \]
-\[ f_{C_3}([a]_3) = \sigma^a_3 \]
+\[ f_{C_2}([a]_2) = x^a \]
+\[ f_{C_3}([a]_3) = y^a \]
 %
-(using the cyclic permutation construction, $\sigma_d\in S_n$ with $d\leq n$ and
-$\abs{\sigma_d}=d$, from above.) 
-
 Suppose $C_2\times C_3$ is a coproduct in $\Grp$ with morphisms
 $\iota_{C_2}:C_2\to C_2\times C_3$ and $\iota_{C_3}:C_3\to C_2\times C_3$.
 Considering $S_3$ with $f_{C_2}$ and $f_{C_3}$, by the universal property of
 coproducts there is a unique morphism $\varphi:C_2\times C_3\to S_3$ such that
-$\iota_{C_2}\varphi = f_{C_2}$ etc.
+$\iota_{C_2}\varphi = f_{C_2}$ and $\iota_{C_3}\varphi = f_{C_3}$.
 
-Since $f_{C_2}$ and $f_{C_3}$ are injective, all of $\iota_{C_2}$,
-$\iota_{C_3}$, and $\varphi$ must be injective.  (To see this, suppose
-$\iota_{C_2}$ isn't injective; then $\iota_{C_2}([a]_2) = \iota_{C_2}([b]_2$ for
-$a\neq b$, which means that $\varphi\iota_{C_2}([a]_2) =
-\varphi\iota_{C_2}([b]_2)$; however, this cannot be, since the diagram must
-commute with the injective function $f_{C_2}$.)
+Since $\im f_{C_2} = \{e,x\}$ and $\im f_{C_3} = \{e,y,y^2\}$, we must have that
+$\{e,x,y,y^2\}\subseteq\im\varphi$. Note that, in $C_2 \times C_3$, there is 1
+element of order 1 ($e$), one element of order 2 ($([1]_2,[0]_3)$), two elements
+of order 3 ($([0]_2,[1]_3)$ and $([0]_2,[2]_3)$), and two elements of order 5
+($([1]_2,[1]_3)$ and $([1]_2,[2]_3)$.) Contrast with $S_3$, which has one
+element of order 1 ($e$), three elements of order 2 ($x$, $xy$, and $xy^2$), and
+two elements of order three ($y$ and $y^2$.)
 
-Now, notice that $S_n$ has three elements of order 2 (the ``reflection''
-elements,) while $C_2$ has one, $([1]_2,[0]_3)$. This means that there must be a
-$g\in C_2\times C_3$ such that $\abs{g}>2$ but $\abs{\varphi(g)}=2$. But this
-means that $\varphi(\inv{g})=\varphi(g)$, even though (since $\abs{g}>2$,)
-$g\neq\inv{g}$. Hence $C_2\times C_3$ is not a coproduct in $\Grp$.
+Proposition 4.1 states that $\abs{ \varphi(g) }$ divides $\abs{ g }$ for all $g
+\in C_2 \times C_3$. Since no element in $S_3$ other than $e$ divides $5$, we
+must have that $\varphi([1]_2,[1]_3)=\varphi([1]_2,[2]_3)=e$. Furthermore, since
+$\{y, y^2\} \subseteq \im \varphi$, and since $([0]_2, [1]_3)$ and $([0]_2,
+[2]_3)$ are the only elements in $C_2 \times C_3$ of order $3$, we must have
+that $\varphi([0]_2, [1]_3) \neq e$. However,
+%
+\[ \varphi([1]_2, [2]_3) = e \text{ but } \varphi([0]_2, [1]_3) \varphi([1]_2,
+[1]_3) = \varphi([0]_2, [1]_3) \neq e \]
+%
+Hence $\varphi$ is not a homomorphism. This shows that $C_2 \times C_3$ is not a
+coproduct in $\Grp$.
 \end{solution}
 
 \end{document}
